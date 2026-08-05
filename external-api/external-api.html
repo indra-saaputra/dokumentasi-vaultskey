@@ -331,6 +331,9 @@ flowchart TD
     F -->|"sudah dikenal"| H{"device sudah\ndi-revoke?"}
     H -->|"ya"| I["403 Forbidden"]
     H -->|"tidak"| J["Session dibuat,\naccess_token + refresh_token\n+ status expiry password"]
+    J --> K{"device ini sudah punya\nremember_me_token tersimpan?\n(dari POST /devices/register\nsebelumnya)"}
+    K -->|"ya"| L["ikut dibalikin di response:\nremember_me_token +\nremember_me_expiration"]
+    K -->|"belum pernah"| M["remember_me_token kosong\n(field di-omit dari response)"]
 </pre>
         <p class="cap">Device baru (jalur G) tidak otomatis dapat token — secara desain butuh langkah OTP + <code class="inline">POST /devices/register</code> berikutnya untuk resmi "dipercaya" dan dapat sesi penuh. Lihat kontrak endpointnya di §09.</p>
       </div>
