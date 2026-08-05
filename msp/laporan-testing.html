@@ -282,11 +282,11 @@
 
       <div class="scorecard">
         <div class="score-cell">
-          <div class="num pk">76</div>
+          <div class="num pk">79</div>
           <div class="label">Skenario diuji</div>
         </div>
         <div class="score-cell">
-          <div class="num pk">76 / 76</div>
+          <div class="num pk">79 / 79</div>
           <div class="label">Sesuai ekspektasi</div>
         </div>
         <div class="score-cell">
@@ -299,7 +299,7 @@
     <section id="ringkasan">
       <h2><span class="num">01</span> Ringkasan Eksekutif</h2>
       <p>Modul MSP Master (data perusahaan mitra MSP) dan pengelolaan user MSP sudah melalui pengujian menyeluruh terhadap sistem yang benar-benar berjalan — bukan simulasi. Setiap fungsi diuji dari dua sisi: <strong>skenario yang seharusnya berhasil</strong> (misalnya membuat perusahaan baru dengan data valid) dan <strong>skenario yang seharusnya ditolak sistem</strong> (misalnya kode perusahaan yang sudah dipakai, atau user tanpa izin akses yang mencoba masuk).</p>
-      <p>Seluruh 76 skenario yang diuji menunjukkan hasil yang sesuai dengan aturan bisnis yang sudah disepakati. Sistem konsisten menolak input yang tidak valid, menjaga struktur hierarki perusahaan sesuai batasan yang ditetapkan, dan memastikan akses hanya diberikan ke perusahaan/user yang berstatus aktif.</p>
+      <p>Seluruh 79 skenario yang diuji menunjukkan hasil yang sesuai dengan aturan bisnis yang sudah disepakati. Sistem konsisten menolak input yang tidak valid, menjaga struktur hierarki perusahaan sesuai batasan yang ditetapkan, dan memastikan akses hanya diberikan ke perusahaan/user yang berstatus aktif.</p>
     </section>
 
     <section id="cakupan">
@@ -310,7 +310,7 @@
           <thead><tr><th>Area</th><th>Yang Dicakup</th><th>Jumlah Skenario</th></tr></thead>
           <tbody>
             <tr><td><strong>MSP Master</strong></td><td>Pengelolaan data perusahaan MSP — struktur hierarki (perusahaan induk/sub-dealer), operasi tambah/ubah/hapus, dan aturan keamanan data</td><td class="mono">34</td></tr>
-            <tr><td><strong>User MSP</strong></td><td>Pengelolaan akun user yang bekerja di bawah perusahaan MSP — pendaftaran, kategori (Agent/Technician), keterkaitan ke perusahaan</td><td class="mono">32</td></tr>
+            <tr><td><strong>User MSP</strong></td><td>Pengelolaan akun user yang bekerja di bawah perusahaan MSP — pendaftaran, kategori (Agent/Technician), keterkaitan ke perusahaan/divisi</td><td class="mono">35</td></tr>
             <tr><td><strong>Kontrol Akses</strong></td><td>Memastikan akses (login, penggunaan sesi, dan pengecekan dari aplikasi eksternal) mengikuti status perusahaan MSP secara real-time</td><td class="mono">10</td></tr>
           </tbody>
         </table>
@@ -778,7 +778,7 @@ curl -X DELETE "{{base_url}}/api/v1/msp-companies/{{company_id_2}}" \
     "first_name": "Demo",
     "last_name": "User1",
     "mobile_number": "+6281200000001",
-    "entity_codes": "ENT-001",
+    "entity_codes": "HQ_001",
     "division_codes": "DIV_IT",
     "category_id": "{{category_id}}"
   }'</pre>
@@ -798,7 +798,7 @@ curl -X DELETE "{{base_url}}/api/v1/msp-companies/{{company_id_2}}" \
     "first_name": "Demo",
     "last_name": "User2",
     "mobile_number": "+6281200000002",
-    "entity_codes": "ENT-001",
+    "entity_codes": "HQ_001",
     "division_codes": "DIV_IT",
     "msp_company_id": "{{company_id}}"
   }'</pre>
@@ -818,7 +818,7 @@ curl -X DELETE "{{base_url}}/api/v1/msp-companies/{{company_id_2}}" \
     "first_name": "Demo",
     "last_name": "User3",
     "mobile_number": "+6281200000003",
-    "entity_codes": "ENT-001",
+    "entity_codes": "HQ_001",
     "division_codes": "DIV_IT"
   }'</pre>
             <p class="tc-note">Perhatikan <code class="inline">agent_id</code> sengaja dibuat sama dengan skenario pertama di atas.</p>
@@ -833,7 +833,7 @@ curl -X DELETE "{{base_url}}/api/v1/msp-companies/{{company_id_2}}" \
   curl -s -o /dev/null -w "req$i: %{http_code}\n" -X POST "{{base_url}}/api/v1/users/msp/" \
     -H "Authorization: Bearer {{token}}" \
     -H "Content-Type: application/json" \
-    -d "{\"agent_id\":\"AGT-DEMO-13\",\"email\":\"demo13-$i@example.com\",\"first_name\":\"Demo\",\"last_name\":\"User13\",\"mobile_number\":\"+62812000001$i\",\"entity_codes\":\"E\",\"division_codes\":\"D\"}" &
+    -d "{\"agent_id\":\"AGT-DEMO-13\",\"email\":\"demo13-$i@example.com\",\"first_name\":\"Demo\",\"last_name\":\"User13\",\"mobile_number\":\"+62812000001$i\",\"entity_codes\":\"HQ_001\",\"division_codes\":\"DIV_IT\"}" &
 done
 wait</pre>
             <p class="tc-note">Skrip di atas mengirim 3 permintaan betul-betul bersamaan (bukan berurutan) — ini menguji kondisi balapan (race condition) di jalur pendaftaran, bukan sekadar duplikat yang dikirim satu-satu.</p>
@@ -850,7 +850,7 @@ wait</pre>
 curl -s -o /dev/null -w "create-user: %{http_code}\n" -X POST "{{base_url}}/api/v1/users/msp/" \
   -H "Authorization: Bearer {{token}}" \
   -H "Content-Type: application/json" \
-  -d '{"agent_id":"AGT-DEMO-14","email":"demo14@example.com","first_name":"Demo","last_name":"User14","mobile_number":"+6281200000014","entity_codes":"E","division_codes":"D","msp_company_id":"{{company_id}}"}' &
+  -d '{"agent_id":"AGT-DEMO-14","email":"demo14@example.com","first_name":"Demo","last_name":"User14","mobile_number":"+6281200000014","entity_codes":"HQ_001","division_codes":"DIV_IT","msp_company_id":"{{company_id}}"}' &
 
 wait</pre>
             <p class="tc-note">Satu permintaan menghapus perusahaan, satu lagi bersamaan mendaftarkan user MSP baru yang langsung dikaitkan ke perusahaan yang sama itu.</p>
@@ -867,7 +867,7 @@ wait</pre>
 curl -s -o /dev/null -w "update-link: %{http_code}\n" -X PUT "{{base_url}}/api/v1/users/msp/{{msp_user_id}}" \
   -H "Authorization: Bearer {{token}}" \
   -H "Content-Type: application/json" \
-  -d '{"agent_id":"AGT-DEMO-02","first_name":"Demo","last_name":"User2","mobile_number":"+6281200000002","entity_codes":"E","division_codes":"D","msp_company_id":"{{company_id}}"}' &
+  -d '{"agent_id":"AGT-DEMO-02","first_name":"Demo","last_name":"User2","mobile_number":"+6281200000002","entity_codes":"HQ_001","division_codes":"DIV_IT","msp_company_id":"{{company_id}}"}' &
 
 wait</pre>
             <p class="tc-note">Satu permintaan menghapus perusahaan, satu lagi bersamaan mengubah data user yang sudah ada supaya terkait ke perusahaan yang sama itu.</p>
@@ -886,7 +886,7 @@ wait</pre>
     "first_name": "Demo",
     "last_name": "User2-Updated",
     "mobile_number": "+6281200000002",
-    "entity_codes": "ENT-001",
+    "entity_codes": "HQ_001",
     "division_codes": "DIV_IT"
   }'</pre>
             <p class="tc-note">Perhatikan: field <code class="inline">msp_company_id</code> sengaja TIDAK disertakan di body ini.</p>
@@ -905,7 +905,7 @@ wait</pre>
     "first_name": "Demo",
     "last_name": "User1-Updated",
     "mobile_number": "+6281200000001",
-    "entity_codes": "ENT-001",
+    "entity_codes": "HQ_001",
     "division_codes": "DIV_IT"
   }'</pre>
             <p class="tc-note">Perhatikan: field <code class="inline">category_id</code> sengaja TIDAK disertakan di body ini.</p>
@@ -930,7 +930,7 @@ curl -X POST "{{base_url}}/api/v1/users/msp/" \
     "first_name": "Demo",
     "last_name": "Pengganti",
     "mobile_number": "+6281200000099",
-    "entity_codes": "ENT-001",
+    "entity_codes": "HQ_001",
     "division_codes": "DIV_IT"
   }'</pre>
             <p class="tc-note">Menguji bahwa ID yang sudah tidak dipakai (karena pemiliknya dihapus) boleh dipakai ulang.</p>
@@ -939,7 +939,7 @@ curl -X POST "{{base_url}}/api/v1/users/msp/" \
         </details>
       </div>
 
-      <h3>Validasi Input &amp; Keamanan Akses<span class="count">18 skenario</span></h3>
+      <h3>Validasi Input &amp; Keamanan Akses<span class="count">21 skenario</span></h3>
 
       <div class="test-list">
         <details class="test-case">
@@ -948,7 +948,7 @@ curl -X POST "{{base_url}}/api/v1/users/msp/" \
             <pre class="curl">curl -X PUT "{{base_url}}/api/v1/users/msp/999999999999999999" \
   -H "Authorization: Bearer {{token}}" \
   -H "Content-Type: application/json" \
-  -d '{"agent_id":"X","first_name":"X","last_name":"X","mobile_number":"+6281200000000","entity_codes":"E","division_codes":"D"}'</pre>
+  -d '{"agent_id":"X","first_name":"X","last_name":"X","mobile_number":"+6281200000000","entity_codes":"HQ_001","division_codes":"DIV_IT"}'</pre>
             <div class="tc-expected">Respons yang diharapkan: <code>404 Not Found</code></div>
           </div>
         </details>
@@ -968,7 +968,7 @@ curl -X POST "{{base_url}}/api/v1/users/msp/" \
             <pre class="curl">curl -X POST "{{base_url}}/api/v1/users/msp/" \
   -H "Authorization: Bearer {{token}}" \
   -H "Content-Type: application/json" \
-  -d '{"agent_id":"AGT-DEMO-05","email":"demo05@example.com","first_name":"Demo","last_name":"User5","mobile_number":"+6281200000005","entity_codes":"E","division_codes":"D","category_id":"abc"}'</pre>
+  -d '{"agent_id":"AGT-DEMO-05","email":"demo05@example.com","first_name":"Demo","last_name":"User5","mobile_number":"+6281200000005","entity_codes":"HQ_001","division_codes":"DIV_IT","category_id":"abc"}'</pre>
             <div class="tc-expected">Respons yang diharapkan: <code>400 Bad Request</code></div>
           </div>
         </details>
@@ -979,7 +979,7 @@ curl -X POST "{{base_url}}/api/v1/users/msp/" \
             <pre class="curl">curl -X POST "{{base_url}}/api/v1/users/msp/" \
   -H "Authorization: Bearer {{token}}" \
   -H "Content-Type: application/json" \
-  -d '{"agent_id":"AGT-DEMO-06","email":"demo06@example.com","first_name":"Demo","last_name":"User6","mobile_number":"+6281200000006","entity_codes":"E","division_codes":"D","msp_company_id":"abc"}'</pre>
+  -d '{"agent_id":"AGT-DEMO-06","email":"demo06@example.com","first_name":"Demo","last_name":"User6","mobile_number":"+6281200000006","entity_codes":"HQ_001","division_codes":"DIV_IT","msp_company_id":"abc"}'</pre>
             <div class="tc-expected">Respons yang diharapkan: <code>400 Bad Request</code></div>
           </div>
         </details>
@@ -990,7 +990,7 @@ curl -X POST "{{base_url}}/api/v1/users/msp/" \
             <pre class="curl">curl -X POST "{{base_url}}/api/v1/users/msp/" \
   -H "Authorization: Bearer {{token}}" \
   -H "Content-Type: application/json" \
-  -d '{"email":"demo07@example.com","first_name":"Demo","last_name":"User7","mobile_number":"+6281200000007","entity_codes":"E","division_codes":"D"}'</pre>
+  -d '{"email":"demo07@example.com","first_name":"Demo","last_name":"User7","mobile_number":"+6281200000007","entity_codes":"HQ_001","division_codes":"DIV_IT"}'</pre>
             <div class="tc-expected">Respons yang diharapkan: <code>422 Unprocessable Entity</code></div>
           </div>
         </details>
@@ -1001,7 +1001,7 @@ curl -X POST "{{base_url}}/api/v1/users/msp/" \
             <pre class="curl">curl -X POST "{{base_url}}/api/v1/users/msp/" \
   -H "Authorization: Bearer {{token}}" \
   -H "Content-Type: application/json" \
-  -d '{"agent_id":"AGT-DEMO-08","email":"demo01@example.com","first_name":"Demo","last_name":"User8","mobile_number":"+6281200000008","entity_codes":"E","division_codes":"D"}'</pre>
+  -d '{"agent_id":"AGT-DEMO-08","email":"demo01@example.com","first_name":"Demo","last_name":"User8","mobile_number":"+6281200000008","entity_codes":"HQ_001","division_codes":"DIV_IT"}'</pre>
             <p class="tc-note">Perhatikan <code class="inline">email</code> sengaja dibuat sama dengan skenario pendaftaran pertama di atas.</p>
             <div class="tc-expected">Respons yang diharapkan: <code>409 Conflict</code></div>
           </div>
@@ -1069,7 +1069,7 @@ curl -X DELETE "{{base_url}}/api/v1/users/msp/{{msp_user_id}}" \
             <pre class="curl">curl -X POST "{{base_url}}/api/v1/users/msp/" \
   -H "Authorization: Bearer {{token}}" \
   -H "Content-Type: application/json" \
-  -d '{"agent_id":"AGT-YANG-SANGAT-PANJANG-SEKALI-LEBIH-DARI-DUA-RATUS-LIMA-PULUH-LIMA-KARAKTER-...(dst hingga 300 karakter)","email":"panjang@example.com","first_name":"F","last_name":"L","mobile_number":"+6281300000099","entity_codes":"E","division_codes":"D"}'</pre>
+  -d '{"agent_id":"AGT-YANG-SANGAT-PANJANG-SEKALI-LEBIH-DARI-DUA-RATUS-LIMA-PULUH-LIMA-KARAKTER-...(dst hingga 300 karakter)","email":"panjang@example.com","first_name":"F","last_name":"L","mobile_number":"+6281300000099","entity_codes":"HQ_001","division_codes":"DIV_IT"}'</pre>
             <p class="tc-note">Batas sistem untuk <code class="inline">agent_id</code> adalah 255 karakter.</p>
             <div class="tc-expected">Respons yang diharapkan: <code>422 Unprocessable Entity</code></div>
           </div>
@@ -1081,7 +1081,7 @@ curl -X DELETE "{{base_url}}/api/v1/users/msp/{{msp_user_id}}" \
             <pre class="curl">curl -X POST "{{base_url}}/api/v1/users/msp/" \
   -H "Authorization: Bearer {{token}}" \
   -H "Content-Type: application/json" \
-  -d '{"agent_id":"AGT-DEMO-11","email":"demo11@example.com","first_name":"NamaYangSangatSangatSangatPanjangSekaliLebihDariSeratusKarakter...(dst hingga 150 karakter)","last_name":"L","mobile_number":"+6281300000011","entity_codes":"E","division_codes":"D"}'</pre>
+  -d '{"agent_id":"AGT-DEMO-11","email":"demo11@example.com","first_name":"NamaYangSangatSangatSangatPanjangSekaliLebihDariSeratusKarakter...(dst hingga 150 karakter)","last_name":"L","mobile_number":"+6281300000011","entity_codes":"HQ_001","division_codes":"DIV_IT"}'</pre>
             <p class="tc-note">Batas sistem untuk nama depan/belakang adalah 100 karakter masing-masing.</p>
             <div class="tc-expected">Respons yang diharapkan: <code>422 Unprocessable Entity</code></div>
           </div>
@@ -1093,7 +1093,7 @@ curl -X DELETE "{{base_url}}/api/v1/users/msp/{{msp_user_id}}" \
             <pre class="curl">curl -X POST "{{base_url}}/api/v1/users/msp/" \
   -H "Authorization: Bearer {{token}}" \
   -H "Content-Type: application/json" \
-  -d '{"agent_id":"AGT-DEMO-12","email":"alamat-email-yang-sangat-panjang-sekali-lebih-dari-seratus-karakter-total-termasuk-domainnya@example.com","first_name":"F","last_name":"L","mobile_number":"+6281300000012","entity_codes":"E","division_codes":"D"}'</pre>
+  -d '{"agent_id":"AGT-DEMO-12","email":"alamat-email-yang-sangat-panjang-sekali-lebih-dari-seratus-karakter-total-termasuk-domainnya@example.com","first_name":"F","last_name":"L","mobile_number":"+6281300000012","entity_codes":"HQ_001","division_codes":"DIV_IT"}'</pre>
             <p class="tc-note">Batas sistem untuk email adalah 100 karakter.</p>
             <div class="tc-expected">Respons yang diharapkan: <code>422 Unprocessable Entity</code></div>
           </div>
@@ -1105,7 +1105,7 @@ curl -X DELETE "{{base_url}}/api/v1/users/msp/{{msp_user_id}}" \
             <pre class="curl">curl -X POST "{{base_url}}/api/v1/users/msp/" \
   -H "Authorization: Bearer {{token}}" \
   -H "Content-Type: application/json" \
-  -d '{"agent_id":"AGT-DEMO-09","email":"demo09@example.com","first_name":"Demo","last_name":"User9","mobile_number":"+6281200000009","entity_codes":"E","division_codes":"D","category_id":"999999"}'</pre>
+  -d '{"agent_id":"AGT-DEMO-09","email":"demo09@example.com","first_name":"Demo","last_name":"User9","mobile_number":"+6281200000009","entity_codes":"HQ_001","division_codes":"DIV_IT","category_id":"999999"}'</pre>
             <div class="tc-expected">Respons yang diharapkan: <code>400 Bad Request</code> — "msp user category not found"</div>
           </div>
         </details>
@@ -1116,7 +1116,7 @@ curl -X DELETE "{{base_url}}/api/v1/users/msp/{{msp_user_id}}" \
             <pre class="curl">curl -X POST "{{base_url}}/api/v1/users/msp/" \
   -H "Authorization: Bearer {{token}}" \
   -H "Content-Type: application/json" \
-  -d '{"agent_id":"AGT-DEMO-10","email":"demo10@example.com","first_name":"Demo","last_name":"User10","mobile_number":"+6281200000010","entity_codes":"E","division_codes":"D","msp_company_id":"999999999999999999"}'</pre>
+  -d '{"agent_id":"AGT-DEMO-10","email":"demo10@example.com","first_name":"Demo","last_name":"User10","mobile_number":"+6281200000010","entity_codes":"HQ_001","division_codes":"DIV_IT","msp_company_id":"999999999999999999"}'</pre>
             <div class="tc-expected">Respons yang diharapkan: <code>400 Bad Request</code> — "msp company not found"</div>
           </div>
         </details>
@@ -1127,7 +1127,7 @@ curl -X DELETE "{{base_url}}/api/v1/users/msp/{{msp_user_id}}" \
             <pre class="curl">curl -X PUT "{{base_url}}/api/v1/users/msp/{{msp_user_id}}" \
   -H "Authorization: Bearer {{token}}" \
   -H "Content-Type: application/json" \
-  -d '{"agent_id":"AGT-DEMO-02","first_name":"Demo","last_name":"User2","mobile_number":"+6281200000002","entity_codes":"E","division_codes":"D","msp_company_id":"999999999999999999"}'</pre>
+  -d '{"agent_id":"AGT-DEMO-02","first_name":"Demo","last_name":"User2","mobile_number":"+6281200000002","entity_codes":"HQ_001","division_codes":"DIV_IT","msp_company_id":"999999999999999999"}'</pre>
             <div class="tc-expected">Respons yang diharapkan: <code>400 Bad Request</code> — "msp company not found"</div>
           </div>
         </details>
@@ -1140,6 +1140,47 @@ curl -X DELETE "{{base_url}}/api/v1/users/msp/{{msp_user_id}}" \
   -H "Content-Type: application/json" \
   -d '{"status": 9}'</pre>
             <div class="tc-expected">Respons yang diharapkan: <code>422 Unprocessable Entity</code></div>
+          </div>
+        </details>
+
+        <details class="test-case">
+          <summary><span class="tc-kondisi">Mendaftarkan user dengan kode perusahaan (entity) yang tidak dikenal sistem</span><span class="tc-right"><span class="tc-hasil">Ditolak, perusahaan tidak ditemukan</span><span class="pill pill-pk">Sesuai</span><span class="tc-toggle">cURL</span></span></summary>
+          <div class="tc-body">
+            <pre class="curl">curl -X POST "{{base_url}}/api/v1/users/msp/" \
+  -H "Authorization: Bearer {{token}}" \
+  -H "Content-Type: application/json" \
+  -d '{"agent_id":"AGT-DEMO-15","email":"demo15@example.com","first_name":"Demo","last_name":"User15","mobile_number":"+6281200000015","entity_codes":"ENT-TIDAK-ADA","division_codes":"DIV_IT"}'</pre>
+            <p class="tc-note">Kode perusahaan (entity) dan divisi sekarang dicocokkan ke data referensi yang sebenarnya, bukan sekadar disimpan sebagai teks bebas — kode yang tidak terdaftar akan ditolak di titik pendaftaran, bukan baru ketahuan belakangan.</p>
+            <div class="tc-expected">Respons yang diharapkan: <code>400 Bad Request</code> — "company not found for entity code ENT-TIDAK-ADA"</div>
+          </div>
+        </details>
+
+        <details class="test-case">
+          <summary><span class="tc-kondisi">Mendaftarkan user dengan kode divisi yang tidak ada di bawah perusahaan yang dipilih</span><span class="tc-right"><span class="tc-hasil">Ditolak, divisi tidak ditemukan</span><span class="pill pill-pk">Sesuai</span><span class="tc-toggle">cURL</span></span></summary>
+          <div class="tc-body">
+            <pre class="curl">curl -X POST "{{base_url}}/api/v1/users/msp/" \
+  -H "Authorization: Bearer {{token}}" \
+  -H "Content-Type: application/json" \
+  -d '{"agent_id":"AGT-DEMO-16","email":"demo16@example.com","first_name":"Demo","last_name":"User16","mobile_number":"+6281200000016","entity_codes":"HQ_001","division_codes":"DIV-TIDAK-ADA"}'</pre>
+            <p class="tc-note">Kode perusahaannya valid (<code class="inline">HQ_001</code>), tapi kode divisinya tidak terdaftar di bawah perusahaan itu.</p>
+            <div class="tc-expected">Respons yang diharapkan: <code>400 Bad Request</code> — "division not found for code DIV-TIDAK-ADA under company HQ_001"</div>
+          </div>
+        </details>
+
+        <details class="test-case">
+          <summary><span class="tc-kondisi">Mengubah kode perusahaan/divisi user ke kode yang tidak valid</span><span class="tc-right"><span class="tc-hasil">Ditolak, keterkaitan lama tetap utuh</span><span class="pill pill-pk">Sesuai</span><span class="tc-toggle">cURL</span></span></summary>
+          <div class="tc-body">
+            <pre class="curl"># 1) Coba ubah dengan kode divisi yang tidak valid
+curl -X PUT "{{base_url}}/api/v1/users/msp/{{msp_user_id}}" \
+  -H "Authorization: Bearer {{token}}" \
+  -H "Content-Type: application/json" \
+  -d '{"agent_id":"AGT-DEMO-02","first_name":"Demo","last_name":"User2","mobile_number":"+6281200000002","entity_codes":"HQ_001","division_codes":"DIV-TIDAK-ADA"}'
+
+# 2) Cek ulang datanya -- keterkaitan perusahaan/divisi yang lama harus tetap ada
+curl -X GET "{{base_url}}/api/v1/users/msp/{{msp_user_id}}" \
+  -H "Authorization: Bearer {{token}}"</pre>
+            <p class="tc-note">Menguji bahwa permintaan yang ditolak tidak meninggalkan data setengah jadi -- keterkaitan perusahaan/divisi yang lama tidak boleh ikut terhapus hanya karena kode penggantinya tidak valid.</p>
+            <div class="tc-expected">Respons langkah 1 yang diharapkan: <code>400 Bad Request</code>. Respons langkah 2: <code class="inline">entity_codes</code>/<code class="inline">division_codes</code> masih menunjukkan nilai yang lama, bukan kosong</div>
           </div>
         </details>
       </div>
@@ -1361,7 +1402,7 @@ curl -X DELETE "{{base_url}}/api/v1/users/msp/{{msp_user_id}}" \
 
     <section id="kesimpulan">
       <h2><span class="num">07</span> Kesimpulan</h2>
-      <p>Dari 76 skenario yang diuji mencakup MSP Master, pengelolaan user MSP, dan kontrol akses lintas perusahaan, seluruhnya menunjukkan hasil yang sesuai dengan aturan bisnis yang sudah disepakati. Sistem terbukti konsisten dalam tiga hal utama:</p>
+      <p>Dari 79 skenario yang diuji mencakup MSP Master, pengelolaan user MSP, dan kontrol akses lintas perusahaan, seluruhnya menunjukkan hasil yang sesuai dengan aturan bisnis yang sudah disepakati. Sistem terbukti konsisten dalam tiga hal utama:</p>
       <ul style="max-width: 70ch; padding-left: 22px;">
         <li>Menjaga integritas struktur data (hierarki perusahaan, keterkaitan user-perusahaan) baik saat data dibuat maupun diubah sebagian.</li>
         <li>Menolak input yang tidak valid dan akses dari pihak yang tidak berwenang secara konsisten.</li>

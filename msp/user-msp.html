@@ -264,6 +264,7 @@ sequenceDiagram
         <li><strong><code class="inline">agent_id</code> unik per baris aktif</strong> — ditegakkan di level database (unique partial index), bukan cuma app-level. Sumber tunggal: kolom ini di <code class="inline">user_msp</code>, tidak lagi disebar ke tabel atribut generik.</li>
         <li><strong>Update parsial mempertahankan link.</strong> Kalau <code class="inline">msp_company_id</code>/<code class="inline">category_id</code> tidak dikirim di body Update, nilai lama dipertahankan — bukan ditimpa kosong. Edit nama doang tidak akan pernah melepas keterkaitan ke perusahaan/kategori.</li>
         <li><strong>Validasi referensi sebelum ditulis.</strong> <code class="inline">msp_company_id</code>/<code class="inline">category_id</code> yang dikirim harus benar-benar ada dan belum dihapus — kalau tidak, ditolak <code class="inline">400</code> yang jelas ("msp company not found" / "msp user category not found"), bukan error database mentah.</li>
+        <li><strong><code class="inline">entity_code</code>/<code class="inline">division_code</code> tervalidasi ke tabel referensinya.</strong> Dua field ini dulunya cuma tersimpan sebagai teks bebas di tabel atribut generik (<code class="inline">user_attributes</code>), tanpa pengecekan apapun. Sekarang keduanya di-resolve ke <code class="inline">entities</code>/<code class="inline">divisions</code> dan disimpan lewat tabel relasi <code class="inline">user_entities</code>/<code class="inline">user_divisions</code> — pola yang sama persis dipakai CRM user. Kode yang tidak terdaftar ditolak <code class="inline">400</code> ("company not found for entity code ..." / "division not found for code ... under company ..."), dan Update mengganti keterkaitan lama dengan yang baru (soft-delete + insert), bukan menumpuk baris.</li>
         <li><strong>ID unik boleh dipakai ulang</strong> setelah pemilik lama dihapus — pengecekan duplikat cuma melihat baris yang masih aktif.</li>
         <li><strong>Hapus cascade ke link-nya.</strong> Soft-delete user MSP ikut soft-delete baris <code class="inline">user_msp</code>-nya dalam transaksi yang sama — mencegah <code class="inline">agent_id</code> yang "sudah dihapus" tetap bisa di-resolve lewat lookup eksternal.</li>
         <li><strong>Batas panjang field.</strong> <code class="inline">agent_id</code> ≤255 karakter, <code class="inline">first_name</code>/<code class="inline">last_name</code>/<code class="inline">email</code> ≤100 karakter — divalidasi di request, sama persis dengan lebar kolom database.</li>
@@ -453,7 +454,7 @@ filters=[["full_name","ilike","Jane"]]   # opsional, JSON array [key, operator, 
       "user_type_code": "MSP",
       "user_type_name": "MSP",
       "user_status_name": "Active",
-      "entity_codes": "ENT-001",
+      "entity_codes": "HQ_001",
       "division_codes": "DIV_IT",
       "msp_company_id": "556800000000000001",
       "category_id": "1",
@@ -499,7 +500,7 @@ filters=[["full_name","ilike","Jane"]]   # opsional, JSON array [key, operator, 
     "user_type_code": "MSP",
     "user_type_name": "MSP",
     "user_status_name": "Active",
-    "entity_codes": "ENT-001",
+    "entity_codes": "HQ_001",
     "division_codes": "DIV_IT",
     "msp_company_id": "556800000000000001",
     "category_id": "1",
@@ -525,7 +526,7 @@ filters=[["full_name","ilike","Jane"]]   # opsional, JSON array [key, operator, 
   "first_name": "New",
   "last_name": "Agent",
   "mobile_number": "+15550001234",
-  "entity_codes": "ENT-001",
+  "entity_codes": "HQ_001",
   "division_codes": "DIV_IT",
   "msp_company_id": "556800000000000001",   // opsional
   "category_id": "1"                         // opsional
@@ -543,7 +544,7 @@ filters=[["full_name","ilike","Jane"]]   # opsional, JSON array [key, operator, 
     "user_type_code": "MSP",
     "user_type_name": "MSP",
     "user_status_name": "Active",
-    "entity_codes": "ENT-001",
+    "entity_codes": "HQ_001",
     "division_codes": "DIV_IT",
     "msp_company_id": "556800000000000001",
     "category_id": "1",
@@ -557,6 +558,8 @@ filters=[["full_name","ilike","Jane"]]   # opsional, JSON array [key, operator, 
           <h5><span class="pill pill-warn">400</span> Bad Request</h5>
           <pre class="code-block">{ "message": "msp company not found", "errors": null }
 // atau: "msp user category not found"
+// atau: "company not found for entity code ..."
+// atau: "division not found for code ... under company ..."
 // atau: validasi field (agent_id/email/mobile_number/dst kosong atau format salah)</pre>
           <h5><span class="pill pill-danger">409</span> Conflict</h5>
           <pre class="code-block">{ "message": "agent id already used", "errors": null }
@@ -573,7 +576,7 @@ filters=[["full_name","ilike","Jane"]]   # opsional, JSON array [key, operator, 
   "first_name": "Jane",
   "last_name": "Doe",
   "mobile_number": "+14155552671",
-  "entity_codes": "ENT-001",
+  "entity_codes": "HQ_001",
   "division_codes": "DIV_IT",
   "msp_company_id": "556800000000000001",   // tidak dikirim/kosong = link lama dipertahankan
   "category_id": "1"                         // tidak dikirim/kosong = link lama dipertahankan
@@ -585,7 +588,9 @@ filters=[["full_name","ilike","Jane"]]   # opsional, JSON array [key, operator, 
 }</pre>
           <h5><span class="pill pill-warn">400</span> Bad Request</h5>
           <pre class="code-block">{ "message": "msp company not found", "errors": null }
-// atau: "msp user category not found"</pre>
+// atau: "msp user category not found"
+// atau: "company not found for entity code ..."
+// atau: "division not found for code ... under company ..."</pre>
           <h5><span class="pill pill-idle">404</span> Not Found</h5>
           <pre class="code-block">{ "message": "msp user not found", "errors": null }</pre>
           <h5><span class="pill pill-danger">409</span> Conflict</h5>
