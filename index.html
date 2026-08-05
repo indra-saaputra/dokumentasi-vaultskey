@@ -25,7 +25,7 @@
   .card h2 { font-size: 16px; margin: 0 0 6px; }
   .card p { font-size: 13.5px; color: var(--ink-dim); margin: 0; }
 
-  details.group { background: var(--bg-raised); border: 1px solid var(--line); border-radius: 10px; box-shadow: var(--shadow); overflow: hidden; }
+  details.group { background: var(--bg-raised); border: 1px solid var(--line); border-radius: 10px; box-shadow: var(--shadow); overflow: hidden; margin-bottom: 14px; }
   details.group summary { list-style: none; cursor: pointer; padding: 20px 22px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
   details.group summary::-webkit-details-marker { display: none; }
   details.group summary h2 { font-size: 16px; margin: 0 0 6px; }
@@ -67,6 +67,22 @@
       <a class="item" href="./msp/laporan-testing.html">
         <h3>Laporan Hasil Testing — MSP Master &amp; User MSP</h3>
         <p>79 skenario pengujian: struktur hierarki, validasi input, konkurensi, dan kontrol akses.</p>
+      </a>
+    </div>
+  </details>
+
+  <details class="group">
+    <summary>
+      <div>
+        <h2>Modul External API (Nexus/OMNI)</h2>
+        <p>Dokumentasi teknis untuk grup route <code>/api/v1/external/*</code> — pintu masuk backend-to-backend untuk aplikasi Nexus lewat OMNI (registrasi, login, device trust, password, biometrik).</p>
+      </div>
+      <span class="chev">▶</span>
+    </summary>
+    <div class="items">
+      <a class="item" href="./external-api/external-api.html">
+        <h3>External API (Nexus/OMNI) — Dokumentasi Teknis</h3>
+        <p>Autentikasi API key, alur registrasi/login/device trust, siklus password, biometrik, sesi, dan kontrak request/response 24 endpoint.</p>
       </a>
     </div>
   </details>
