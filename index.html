@@ -24,6 +24,20 @@
   .card:hover { transform: translateY(-1px); }
   .card h2 { font-size: 16px; margin: 0 0 6px; }
   .card p { font-size: 13.5px; color: var(--ink-dim); margin: 0; }
+
+  details.group { background: var(--bg-raised); border: 1px solid var(--line); border-radius: 10px; box-shadow: var(--shadow); overflow: hidden; }
+  details.group summary { list-style: none; cursor: pointer; padding: 20px 22px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  details.group summary::-webkit-details-marker { display: none; }
+  details.group summary h2 { font-size: 16px; margin: 0 0 6px; }
+  details.group summary p { font-size: 13.5px; color: var(--ink-dim); margin: 0; }
+  details.group summary .chev { font-family: ui-monospace, monospace; font-size: 12px; color: var(--ink-dim); flex-shrink: 0; transition: transform .15s ease; }
+  details.group[open] summary .chev { transform: rotate(90deg); }
+  details.group .items { padding: 0 14px 14px; display: flex; flex-direction: column; gap: 10px; }
+  details.group .item { display: block; background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 14px 16px; text-decoration: none; color: var(--ink); transition: transform .08s ease; }
+  details.group .item:hover { transform: translateY(-1px); }
+  details.group .item h3 { font-size: 14.5px; margin: 0 0 4px; }
+  details.group .item p { font-size: 13px; color: var(--ink-dim); margin: 0; }
+
   footer { margin-top: 48px; font-family: ui-monospace, monospace; font-size: 12px; color: var(--ink-dim); }
 </style>
 </head>
@@ -33,20 +47,29 @@
   <h1>VaultKey — Dokumentasi</h1>
   <p class="sub">Dokumentasi teknis dan laporan hasil testing untuk modul MSP (Managed Service Provider) pada VaultKey.</p>
 
-  <a class="card" href="./msp/msp-master.html">
-    <h2>MSP Master — Dokumentasi Teknis</h2>
-    <p>Skema data, aturan bisnis, keamanan konkurensi, dan alur CRUD untuk perusahaan MSP.</p>
-  </a>
-
-  <a class="card" href="./msp/user-msp.html">
-    <h2>User MSP — Dokumentasi Teknis</h2>
-    <p>Skema data, linking ke MSP company, 3 checkpoint gating, dan alur CRUD untuk user MSP (Agent/Technician).</p>
-  </a>
-
-  <a class="card" href="./msp/laporan-testing.html">
-    <h2>Laporan Hasil Testing — MSP Master &amp; User MSP</h2>
-    <p>76 skenario pengujian: struktur hierarki, validasi input, konkurensi, dan kontrol akses.</p>
-  </a>
+  <details class="group">
+    <summary>
+      <div>
+        <h2>Modul MSP</h2>
+        <p>Dokumentasi teknis &amp; laporan testing untuk perusahaan MSP dan user MSP.</p>
+      </div>
+      <span class="chev">▶</span>
+    </summary>
+    <div class="items">
+      <a class="item" href="./msp/msp-master.html">
+        <h3>MSP Master — Dokumentasi Teknis</h3>
+        <p>Skema data, aturan bisnis, keamanan konkurensi, dan alur CRUD untuk perusahaan MSP.</p>
+      </a>
+      <a class="item" href="./msp/user-msp.html">
+        <h3>User MSP — Dokumentasi Teknis</h3>
+        <p>Skema data, linking ke MSP company, 3 checkpoint gating, dan alur CRUD untuk user MSP (Agent/Technician).</p>
+      </a>
+      <a class="item" href="./msp/laporan-testing.html">
+        <h3>Laporan Hasil Testing — MSP Master &amp; User MSP</h3>
+        <p>79 skenario pengujian: struktur hierarki, validasi input, konkurensi, dan kontrol akses.</p>
+      </a>
+    </div>
+  </details>
 
   <footer>VaultKey · dokumentasi-vaultskey</footer>
 </main>
