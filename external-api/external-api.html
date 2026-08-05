@@ -263,7 +263,7 @@ flowchart LR
         <table class="data">
           <thead><tr><th>Method</th><th>Path</th><th>Handler</th></tr></thead>
           <tbody>
-            <tr><td><span class="method method-post">POST</span></td><td class="mono">/external/devices/register</td><td class="mono">Register <span class="pill pill-danger" style="margin-left:6px">lihat §09</span></td></tr>
+            <tr><td><span class="method method-post">POST</span></td><td class="mono">/external/devices/register</td><td class="mono">RegisterDevice</td></tr>
             <tr><td><span class="method method-post">POST</span></td><td class="mono">/external/remember-me/validate</td><td class="mono">ValidateRememberMe</td></tr>
             <tr><td><span class="method method-post">POST</span></td><td class="mono">/external/tokens/refresh</td><td class="mono">RefreshToken</td></tr>
           </tbody>
@@ -332,7 +332,7 @@ flowchart TD
     H -->|"ya"| I["403 Forbidden"]
     H -->|"tidak"| J["Session dibuat,\naccess_token + refresh_token\n+ status expiry password"]
 </pre>
-        <p class="cap">Device baru (jalur G) tidak otomatis dapat token — secara desain butuh langkah OTP + <code class="inline">POST /devices/register</code> berikutnya untuk resmi "dipercaya". Lihat catatan di §09 soal endpoint ini.</p>
+        <p class="cap">Device baru (jalur G) tidak otomatis dapat token — secara desain butuh langkah OTP + <code class="inline">POST /devices/register</code> berikutnya untuk resmi "dipercaya" dan dapat sesi penuh. Lihat kontrak endpointnya di §09.</p>
       </div>
 
       <h3 id="remember-me">Remember Me — Login Diam-diam</h3>
@@ -353,7 +353,7 @@ flowchart TD
     K -->|"sudah lewat"| L["is_valid: false,\nis_expired_remember_me_token: true"]
     K -->|"masih valid"| M["Session baru dibuat,\naccess_token + refresh_token\n(TANPA minta password lagi)"]
 </pre>
-        <p class="cap">Satu-satunya jalur penerbitan <code class="inline">remember_me_token</code> yang aktif saat ini adalah lewat Login (device dikenal). Method <code class="inline">RegisterDevice</code> juga dirancang untuk bisa menerbitkannya, tapi belum ke-mount ke route manapun — lihat §09.</p>
+        <p class="cap"><code class="inline">remember_me_token</code> baru cuma diterbitkan di satu titik: <code class="inline">POST /devices/register</code>, kalau <code class="inline">remember_me: true</code> dikirim di request. <code class="inline">Login</code> sendiri tidak pernah membuat token baru — dia cuma gaung ulang (echo) token yang sudah tersimpan dari langkah device-register sebelumnya.</p>
       </div>
     </section>
 
@@ -662,13 +662,9 @@ flowchart TD
       <p class="grp-hd">Devices &amp; Tokens</p>
 
       <details class="endpoint">
-        <summary><span class="method method-post">POST</span><span class="path">/external/devices/register</span><span class="desc">⚠ Lihat §09 — route ini tidak memanggil RegisterDevice</span><span class="chev">▶</span></summary>
+        <summary><span class="method method-post">POST</span><span class="path">/external/devices/register</span><span class="desc">Percayakan device baru, terbitkan sesi</span><span class="chev">▶</span></summary>
         <div class="body">
-          <div class="callout danger">
-            <span class="label">Perilaku saat ini</span>
-            <p>Route ini di-wire ke handler <code class="inline">Register</code> yang sama dengan <code class="inline">/users/register/subscriber</code> — bukan ke method <code class="inline">RegisterDevice</code> yang sebenarnya ada dan sudah diimplementasikan lengkap (buat device baru, generate remember-me token, buat session). Body yang diharapkan endpoint ini pun seharusnya <code class="inline">RegisterDeviceRequest</code>, bukan <code class="inline">RegisterSubscriberRequest</code>.</p>
-          </div>
-          <h5>Body yang seharusnya (berdasarkan <code class="inline">RegisterDeviceRequest</code> &amp; method <code class="inline">RegisterDevice</code> yang belum ter-wire)</h5>
+          <h5>Request Body</h5>
           <pre class="code-block">{
   "otp_reference_token": "a1b2c3d4-...",
   "user_id": 593847291029384711,
@@ -676,6 +672,18 @@ flowchart TD
   "device_id": "device-abc-123",
   "remember_me": true
 }</pre>
+          <h5><span class="pill pill-pk">200</span> OK</h5>
+          <pre class="code-block">{ "data": {
+  "token_type": "Bearer", "access_token": "eyJ...", "access_token_expiration": 1800,
+  "refresh_token": "eyJ...", "refresh_token_expiration": 1800,
+  "remember_me_token": "RM_...", "remember_me_expiration": 2592000,
+  "account_number": "1234567890123", "full_name": "John Doe", "user_name": "johndoe"
+} }</pre>
+          <p class="note">Dipanggil setelah jalur "device baru" di Login (§05) — device dan session-nya baru resmi dibuat di sini. Kalau <code class="inline">remember_me: false</code>, field <code class="inline">remember_me_token</code>/<code class="inline">remember_me_expiration</code> ikut kosong di response.</p>
+          <div class="callout idle">
+            <span class="label">Catatan</span>
+            <p><code class="inline">otp_reference_token</code> diterima di request tapi belum divalidasi statusnya (harus <code class="inline">VERIFIED</code>) sebelum device didaftarkan — lihat §11.</p>
+          </div>
         </div>
       </details>
 
@@ -808,10 +816,6 @@ flowchart TD
       <h2><span class="num">11</span> Catatan Teknis</h2>
       <p class="lede">Hal-hal yang perlu diketahui sebelum pegang modul ini — bukan daftar "harus segera diperbaiki", tapi supaya tidak jadi kejutan.</p>
       <div class="obs-list">
-        <div class="obs-item">
-          <div class="obs-where">router.go · POST /external/devices/register</div>
-          <p>Route ini di-wire ke handler <code class="inline">Register</code> (registrasi subscriber baru), bukan ke <code class="inline">RegisterDevice</code> yang sudah lengkap diimplementasikan (buat device, remember-me token, session) tapi tidak pernah ke-mount ke route manapun. Body yang diterima saat ini (<code class="inline">RegisterSubscriberRequest</code>) juga tidak cocok dengan kebutuhan device registration.</p>
-        </div>
         <div class="obs-item">
           <div class="obs-where">external_usecase.go · RegisterDevice</div>
           <p><code class="inline">RegisterDeviceParams.OTPReferenceToken</code> diterima sebagai field wajib di request, tapi tidak pernah divalidasi/dipakai di implementasinya — device langsung didaftarkan tanpa mengecek OTP tersebut benar-benar sudah <code class="inline">VERIFIED</code> untuk device itu.</p>
