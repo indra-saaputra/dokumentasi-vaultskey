@@ -155,6 +155,7 @@
       <p class="grp-label">Alur</p>
       <a href="#registrasi">Registrasi</a>
       <a href="#login">Login &amp; Device</a>
+      <a href="#remember-me">Remember Me</a>
       <a href="#password">Siklus Password</a>
       <a href="#biometric">Biometrik</a>
       <a href="#sesi">Sesi</a>
@@ -333,6 +334,27 @@ flowchart TD
 </pre>
         <p class="cap">Device baru (jalur G) tidak otomatis dapat token — secara desain butuh langkah OTP + <code class="inline">POST /devices/register</code> berikutnya untuk resmi "dipercaya". Lihat catatan di §09 soal endpoint ini.</p>
       </div>
+
+      <h3 id="remember-me">Remember Me — Login Diam-diam</h3>
+      <p><code class="inline">remember_me_token</code> diterbitkan sekali di respons Login sukses (jalur J di diagram atas) — device menyimpannya, lalu tiap kali app dibuka lagi, dipakai buat login otomatis tanpa minta password ulang.</p>
+      <div class="diagram">
+<pre class="mermaid">
+flowchart TD
+    A["Login sukses\n(device sudah dikenal)"] --> B["remember_me_token diterbitkan,\nvalid 30 hari"]
+    B --> C["disimpan di device"]
+    C -.->|"app dibuka lagi\ndi lain waktu"| D["POST /remember-me/validate\nuser_id + remember_me_token + device_id"]
+    D --> E{"token ketemu\nuntuk device ini?"}
+    E -->|"tidak"| F["is_valid_remember_me_token: false"]
+    E -->|"ya"| G{"device sudah\ndi-revoke?"}
+    G -->|"ya"| H["403: device has\nbeen revoked"]
+    G -->|"tidak"| I{"device_id di request\ncocok dengan yang\ntersimpan?"}
+    I -->|"tidak"| J["403: device_id mismatch"]
+    I -->|"ya"| K{"token masih dalam\nmasa berlaku 30 hari?"}
+    K -->|"sudah lewat"| L["is_valid: false,\nis_expired_remember_me_token: true"]
+    K -->|"masih valid"| M["Session baru dibuat,\naccess_token + refresh_token\n(TANPA minta password lagi)"]
+</pre>
+        <p class="cap">Satu-satunya jalur penerbitan <code class="inline">remember_me_token</code> yang aktif saat ini adalah lewat Login (device dikenal). Method <code class="inline">RegisterDevice</code> juga dirancang untuk bisa menerbitkannya, tapi belum ke-mount ke route manapun — lihat §09.</p>
+      </div>
     </section>
 
     <section id="password">
@@ -359,22 +381,26 @@ flowchart TD
     <section id="biometric">
       <h2><span class="num">07</span> Biometrik</h2>
       <p class="lede">Skema challenge-response pakai ECDSA (P-256, SHA-256) — private key tidak pernah meninggalkan device, yang dikirim ke server cuma public key (sekali, saat enroll) dan signature (tiap login).</p>
+      <h3>Enrollment — setelah login sesi biasa</h3>
       <div class="diagram">
 <pre class="mermaid">
 flowchart TD
-    subgraph ENROLL["Enrollment -- setelah login sesi biasa"]
-        A["POST /biometrics/initiate\naccess_token"] --> B["challenge_string,\nberlaku 300 detik"]
-        B --> C["Device sign challenge\npakai private key"]
-        C --> D["POST /biometrics/enroll\npublic_key + signed_challenge"]
-        D -->|"signature gak valid"| E["is_success: false"]
-        D -->|"signature valid"| F["public_key + credential_id\ndisimpan ke device"]
-    end
-    subgraph LOGIN["Login berikutnya -- tanpa password"]
-        G["GET /biometrics/login"] --> H["challenge_string baru"]
-        H --> I["Device sign lagi"]
-        I --> J["POST /biometrics/login\ncredential_id + signed_challenge_string"]
-        J -->|"verify vs public_key\nyang tersimpan"| K["Session baru,\naccess_token 300s"]
-    end
+    A["POST /biometrics/initiate\naccess_token"] --> B["challenge_string,\nberlaku 300 detik"]
+    B --> C["Device sign challenge\npakai private key"]
+    C --> D["POST /biometrics/enroll\npublic_key + signed_challenge"]
+    D -->|"signature gak valid"| E["is_success: false"]
+    D -->|"signature valid"| F["public_key + credential_id\ndisimpan ke device"]
+</pre>
+      </div>
+
+      <h3>Login Berikutnya — tanpa password</h3>
+      <div class="diagram">
+<pre class="mermaid">
+flowchart TD
+    G["GET /biometrics/login"] --> H["challenge_string baru"]
+    H --> I["Device sign lagi\npakai private key"]
+    I --> J["POST /biometrics/login\ncredential_id + signed_challenge_string"]
+    J -->|"verify vs public_key\nyang tersimpan saat enroll"| K["Session baru,\naccess_token 300s"]
 </pre>
       </div>
       <div class="callout">
