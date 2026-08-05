@@ -134,6 +134,17 @@
 
   code.inline { background: var(--code-bg); padding: 1px 6px; border-radius: 4px; font-size: 0.88em; }
 
+  .endpoint { border: 1px solid var(--line); border-radius: 8px; margin: 12px 0; background: var(--bg-raised); overflow: hidden; }
+  .endpoint summary { cursor: pointer; list-style: none; padding: 12px 16px; display: flex; align-items: center; gap: 10px; }
+  .endpoint summary::-webkit-details-marker { display: none; }
+  .endpoint summary .path { font-family: var(--mono); font-size: 13px; font-weight: 600; }
+  .endpoint summary .desc { color: var(--ink-dim); font-size: 12.5px; }
+  .endpoint summary .chev { margin-left: auto; color: var(--ink-dim); font-size: 11px; transition: transform .15s ease; }
+  .endpoint[open] summary .chev { transform: rotate(90deg); }
+  .endpoint .body { padding: 2px 16px 16px; border-top: 1px solid var(--line-soft); }
+  .endpoint h5 { font-family: var(--mono); font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-dim); margin: 16px 0 6px; display: flex; align-items: center; gap: 8px; }
+  .endpoint pre.code-block { background: var(--code-bg); border: 1px solid var(--line-soft); border-radius: 6px; padding: 12px 14px; font-family: var(--mono); font-size: 12.5px; line-height: 1.55; overflow-x: auto; margin: 0; white-space: pre; }
+
   footer { border-top: 1px solid var(--line); padding-top: 20px; margin-top: 60px; font-family: var(--mono); font-size: 12px; color: var(--ink-dim); }
   ::selection { background: var(--principal-soft); }
 </style>
@@ -417,6 +428,242 @@ flowchart TD
         <span class="label">† Known issue di luar scope modul ini</span>
         <p>Reset-password saat ini gagal (500) untuk <strong>semua</strong> tipe user (CRM, Subscriber, MSP) — tabel <code class="inline">token_verifications</code> di database tidak punya kolom <code class="inline">user_id</code>/<code class="inline">email</code> yang dicoba diisi kode. Ini gap infrastruktur bersama, bukan spesifik User MSP.</p>
       </div>
+
+      <h3>Kontrak Request &amp; Response per Endpoint</h3>
+      <p style="font-size:13px;color:var(--ink-dim)">Klik tiap baris untuk lihat contoh body request dan response persis seperti yang dikembalikan server. Semua endpoint <code class="inline">/users/msp/*</code> butuh header <code class="inline">Authorization: Bearer &lt;token&gt;</code>, kecuali Agent Lookup yang pakai <code class="inline">X-API-KEY</code>.</p>
+
+      <details class="endpoint">
+        <summary><span class="method method-get">GET</span><span class="path">/api/v1/users/msp</span><span class="desc">List, dengan paginasi &amp; filter</span><span class="chev">▶</span></summary>
+        <div class="body">
+          <h5>Query Params</h5>
+          <pre class="code-block">page=1
+size=10
+filters=[["full_name","ilike","Jane"]]   # opsional, JSON array [key, operator, value]</pre>
+          <h5><span class="pill pill-pk">200</span> OK</h5>
+          <pre class="code-block">{
+  "message": "success",
+  "data": [
+    {
+      "id": 594847291029384712,
+      "agent_id": "DMS-AGT-99201",
+      "first_name": "Jane",
+      "last_name": "Doe",
+      "email": "jane.doe@example.com",
+      "mobile_number": "+14155552671",
+      "user_type_code": "MSP",
+      "user_type_name": "MSP",
+      "user_status_name": "Active",
+      "entity_codes": "ENT-001",
+      "division_codes": "DIV_IT",
+      "msp_company_id": "556800000000000001",
+      "category_id": "1",
+      "category_code": "AGENT",
+      "category_name": "Agent",
+      "roles": [],
+      "approved_at": null,
+      "created_at": "2026-07-20T03:12:00Z"
+    }
+  ],
+  "meta": { "page": 1, "size": 10, "total_items": 1, "total_pages": 1 }
+}</pre>
+        </div>
+      </details>
+
+      <details class="endpoint">
+        <summary><span class="method method-get">GET</span><span class="path">/api/v1/users/msp/categories</span><span class="desc">Lookup kategori</span><span class="chev">▶</span></summary>
+        <div class="body">
+          <h5><span class="pill pill-pk">200</span> OK</h5>
+          <pre class="code-block">{
+  "message": "msp user categories retrieved",
+  "data": [
+    { "id": 1, "code": "AGENT", "name": "Agent" },
+    { "id": 2, "code": "TECHNICIAN", "name": "Technician" }
+  ]
+}</pre>
+        </div>
+      </details>
+
+      <details class="endpoint">
+        <summary><span class="method method-get">GET</span><span class="path">/api/v1/users/msp/:id</span><span class="desc">Detail satu user</span><span class="chev">▶</span></summary>
+        <div class="body">
+          <h5><span class="pill pill-pk">200</span> OK</h5>
+          <pre class="code-block">{
+  "message": "msp user retrieved",
+  "data": {
+    "id": 594847291029384712,
+    "agent_id": "DMS-AGT-99201",
+    "first_name": "Jane",
+    "last_name": "Doe",
+    "email": "jane.doe@example.com",
+    "mobile_number": "+14155552671",
+    "user_type_code": "MSP",
+    "user_type_name": "MSP",
+    "user_status_name": "Active",
+    "entity_codes": "ENT-001",
+    "division_codes": "DIV_IT",
+    "msp_company_id": "556800000000000001",
+    "category_id": "1",
+    "category_code": "AGENT",
+    "category_name": "Agent",
+    "roles": [],
+    "approved_at": null,
+    "created_at": "2026-07-20T03:12:00Z"
+  }
+}</pre>
+          <h5><span class="pill pill-idle">404</span> Not Found</h5>
+          <pre class="code-block">{ "message": "msp user not found", "errors": null }</pre>
+        </div>
+      </details>
+
+      <details class="endpoint">
+        <summary><span class="method method-post">POST</span><span class="path">/api/v1/users/msp</span><span class="desc">Daftarkan user MSP baru</span><span class="chev">▶</span></summary>
+        <div class="body">
+          <h5>Request Body</h5>
+          <pre class="code-block">{
+  "agent_id": "DMS-AGT-NEW01",
+  "email": "new.agent@example.com",
+  "first_name": "New",
+  "last_name": "Agent",
+  "mobile_number": "+15550001234",
+  "entity_codes": "ENT-001",
+  "division_codes": "DIV_IT",
+  "msp_company_id": "556800000000000001",   // opsional
+  "category_id": "1"                         // opsional
+}</pre>
+          <h5><span class="pill pill-pk">201</span> Created</h5>
+          <pre class="code-block">{
+  "message": "msp user created",
+  "data": {
+    "id": 594847291029384999,
+    "agent_id": "DMS-AGT-NEW01",
+    "first_name": "New",
+    "last_name": "Agent",
+    "email": "new.agent@example.com",
+    "mobile_number": "+15550001234",
+    "user_type_code": "MSP",
+    "user_type_name": "MSP",
+    "user_status_name": "Active",
+    "entity_codes": "ENT-001",
+    "division_codes": "DIV_IT",
+    "msp_company_id": "556800000000000001",
+    "category_id": "1",
+    "category_code": "AGENT",
+    "category_name": "Agent",
+    "roles": [],
+    "approved_at": null,
+    "created_at": "2026-08-05T04:00:00Z"
+  }
+}</pre>
+          <h5><span class="pill pill-warn">400</span> Bad Request</h5>
+          <pre class="code-block">{ "message": "msp company not found", "errors": null }
+// atau: "msp user category not found"
+// atau: validasi field (agent_id/email/mobile_number/dst kosong atau format salah)</pre>
+          <h5><span class="pill pill-danger">409</span> Conflict</h5>
+          <pre class="code-block">{ "message": "agent id already used", "errors": null }
+// atau: "email or phone number already registered"</pre>
+        </div>
+      </details>
+
+      <details class="endpoint">
+        <summary><span class="method method-put">PUT</span><span class="path">/api/v1/users/msp/:id</span><span class="desc">Update profil &amp; link</span><span class="chev">▶</span></summary>
+        <div class="body">
+          <h5>Request Body</h5>
+          <pre class="code-block">{
+  "agent_id": "DMS-AGT-99201",
+  "first_name": "Jane",
+  "last_name": "Doe",
+  "mobile_number": "+14155552671",
+  "entity_codes": "ENT-001",
+  "division_codes": "DIV_IT",
+  "msp_company_id": "556800000000000001",   // tidak dikirim/kosong = link lama dipertahankan
+  "category_id": "1"                         // tidak dikirim/kosong = link lama dipertahankan
+}</pre>
+          <h5><span class="pill pill-pk">200</span> OK</h5>
+          <pre class="code-block">{
+  "message": "msp user updated",
+  "data": { "id": 594847291029384712, "agent_id": "DMS-AGT-99201", "...": "sama seperti response GET by ID" }
+}</pre>
+          <h5><span class="pill pill-warn">400</span> Bad Request</h5>
+          <pre class="code-block">{ "message": "msp company not found", "errors": null }
+// atau: "msp user category not found"</pre>
+          <h5><span class="pill pill-idle">404</span> Not Found</h5>
+          <pre class="code-block">{ "message": "msp user not found", "errors": null }</pre>
+          <h5><span class="pill pill-danger">409</span> Conflict</h5>
+          <pre class="code-block">{ "message": "agent id already used", "errors": null }</pre>
+        </div>
+      </details>
+
+      <details class="endpoint">
+        <summary><span class="method method-patch">PATCH</span><span class="path">/api/v1/users/msp/:id/revoke</span><span class="desc">Ubah status (Active/Inactive/Suspended)</span><span class="chev">▶</span></summary>
+        <div class="body">
+          <h5>Request Body</h5>
+          <pre class="code-block">{ "status": 2 }   // 1=Active, 2=Inactive, 3=Suspended</pre>
+          <h5><span class="pill pill-pk">200</span> OK</h5>
+          <pre class="code-block">{ "message": "msp user status updated" }</pre>
+          <h5><span class="pill pill-idle">404</span> Not Found</h5>
+          <pre class="code-block">{ "message": "msp user not found", "errors": null }</pre>
+        </div>
+      </details>
+
+      <details class="endpoint">
+        <summary><span class="method method-delete">DELETE</span><span class="path">/api/v1/users/msp/:id</span><span class="desc">Soft delete, cascade ke link</span><span class="chev">▶</span></summary>
+        <div class="body">
+          <h5><span class="pill pill-pk">200</span> OK</h5>
+          <pre class="code-block">{ "message": "msp user deleted" }</pre>
+          <h5><span class="pill pill-idle">404</span> Not Found</h5>
+          <pre class="code-block">{ "message": "msp user not found", "errors": null }</pre>
+        </div>
+      </details>
+
+      <details class="endpoint">
+        <summary><span class="method method-post">POST</span><span class="path">/api/v1/users/msp/:id/reset-password</span><span class="desc">Kirim link reset password</span><span class="chev">▶</span></summary>
+        <div class="body">
+          <h5><span class="pill pill-pk">200</span> OK <span style="font-weight:400;text-transform:none;color:var(--ink-dim)">(secara desain — lihat catatan di bawah untuk kondisi saat ini)</span></h5>
+          <pre class="code-block">{ "message": "reset password link sent" }</pre>
+          <div class="callout idle" style="margin-top:10px">
+            <span class="label">Kondisi saat ini</span>
+            <p>Endpoint ini gagal dengan <code class="inline">500</code> untuk semua tipe user, termasuk MSP — lihat catatan † di atas. Bukan bug spesifik modul ini, sudah tercatat sebagai gap infrastruktur bersama.</p>
+          </div>
+        </div>
+      </details>
+
+      <details class="endpoint">
+        <summary><span class="method method-post">POST</span><span class="path">/api/v1/users/me</span><span class="desc">Agent Lookup — auth pakai X-API-KEY, bukan token session</span><span class="chev">▶</span></summary>
+        <div class="body">
+          <h5>Query Params</h5>
+          <pre class="code-block">application_id=825403928594032500</pre>
+          <h5>Headers</h5>
+          <pre class="code-block">X-API-KEY: &lt;api_key&gt;
+Content-Type: application/json</pre>
+          <h5>Request Body</h5>
+          <pre class="code-block">{ "user_reference_id": "DMS-AGT-99201" }   // agent_id milik user MSP (atau reference_id CRM)</pre>
+          <h5><span class="pill pill-pk">200</span> OK</h5>
+          <pre class="code-block">{
+  "message": "user profile retrieved",
+  "data": {
+    "display_name": "Jane Doe",
+    "username": "jane.doe",
+    "first_name": "Jane",
+    "last_name": "Doe",
+    "email": "jane.doe@example.com",
+    "user_type": "MSP",
+    "attributes": {},
+    "msp": [
+      { "code": "MSP-A001", "type": "ACTIVE" }
+    ],
+    "applications": [
+      { "name": "DMS", "modules": [] }
+    ]
+  }
+}</pre>
+          <p style="font-size:12.5px;color:var(--ink-dim);margin-top:6px">Field <code class="inline">msp</code> array kosong <code class="inline">[]</code> kalau user tidak tertaut company MSP manapun.</p>
+          <h5><span class="pill pill-idle">404</span> Not Found</h5>
+          <pre class="code-block">{ "message": "reference_id not found", "errors": null }</pre>
+          <h5><span class="pill pill-danger">403</span> Forbidden</h5>
+          <pre class="code-block">{ "message": "msp company is not active", "errors": null }
+// dikembalikan juga saat company sudah dihapus (COMPANY_MISSING), bukan hanya saat statusnya non-ACTIVE</pre>
+        </div>
+      </details>
     </section>
 
     <section id="next">

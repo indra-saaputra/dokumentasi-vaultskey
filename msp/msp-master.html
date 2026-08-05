@@ -125,6 +125,17 @@
 
   code.inline { background: var(--code-bg); padding: 1px 6px; border-radius: 4px; font-size: 0.88em; }
 
+  .endpoint { border: 1px solid var(--line); border-radius: 8px; margin: 12px 0; background: var(--bg-raised); overflow: hidden; }
+  .endpoint summary { cursor: pointer; list-style: none; padding: 12px 16px; display: flex; align-items: center; gap: 10px; }
+  .endpoint summary::-webkit-details-marker { display: none; }
+  .endpoint summary .path { font-family: var(--mono); font-size: 13px; font-weight: 600; }
+  .endpoint summary .desc { color: var(--ink-dim); font-size: 12.5px; }
+  .endpoint summary .chev { margin-left: auto; color: var(--ink-dim); font-size: 11px; transition: transform .15s ease; }
+  .endpoint[open] summary .chev { transform: rotate(90deg); }
+  .endpoint .body { padding: 2px 16px 16px; border-top: 1px solid var(--line-soft); }
+  .endpoint h5 { font-family: var(--mono); font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-dim); margin: 16px 0 6px; display: flex; align-items: center; gap: 8px; }
+  .endpoint pre.code-block { background: var(--code-bg); border: 1px solid var(--line-soft); border-radius: 6px; padding: 12px 14px; font-family: var(--mono); font-size: 12.5px; line-height: 1.55; overflow-x: auto; margin: 0; white-space: pre; }
+
   footer { border-top: 1px solid var(--line); padding-top: 20px; margin-top: 60px; font-family: var(--mono); font-size: 12px; color: var(--ink-dim); }
   ::selection { background: var(--principal-soft); }
 </style>
@@ -347,6 +358,148 @@ flowchart TD
           </tbody>
         </table>
       </div>
+
+      <h3>Kontrak Request &amp; Response per Endpoint</h3>
+      <p style="font-size:13px;color:var(--ink-dim)">Klik tiap baris untuk lihat contoh body request dan response persis seperti yang dikembalikan server (bukan skema abstrak). Semua endpoint butuh header <code class="inline">Authorization: Bearer &lt;token&gt;</code>, kecuali disebutkan lain.</p>
+
+      <details class="endpoint">
+        <summary><span class="method method-get">GET</span><span class="path">/api/v1/msp-companies</span><span class="desc">List, dengan paginasi &amp; filter</span><span class="chev">▶</span></summary>
+        <div class="body">
+          <h5>Query Params</h5>
+          <pre class="code-block">page=1
+size=10
+filters=[["code","ilike","MSP-A"]]   # opsional, JSON array [key, operator, value]</pre>
+          <h5><span class="pill pill-pk">200</span> OK</h5>
+          <pre class="code-block">{
+  "message": "success",
+  "data": [
+    {
+      "id": "556800000000000001",
+      "code": "MSP-A001",
+      "name": "Company A",
+      "msp_tree": "556800000000000001/",
+      "msp_status": 2,
+      "msp_status_name": "ACTIVE",
+      "created_at": "2026-07-20T03:12:00Z",
+      "updated_at": "2026-08-01T09:40:00Z"
+    }
+  ],
+  "meta": { "page": 1, "size": 10, "total_items": 1, "total_pages": 1 }
+}</pre>
+        </div>
+      </details>
+
+      <details class="endpoint">
+        <summary><span class="method method-get">GET</span><span class="path">/api/v1/msp-companies/statuses</span><span class="desc">Lookup status</span><span class="chev">▶</span></summary>
+        <div class="body">
+          <h5><span class="pill pill-pk">200</span> OK</h5>
+          <pre class="code-block">{
+  "message": "msp statuses retrieved",
+  "data": [
+    { "id": 1, "code": "PENDING", "name": "Pending" },
+    { "id": 2, "code": "ACTIVE", "name": "Active" },
+    { "id": 3, "code": "SUSPENDED", "name": "Suspended" },
+    { "id": 4, "code": "TERMINATED", "name": "Terminated" }
+  ]
+}</pre>
+        </div>
+      </details>
+
+      <details class="endpoint">
+        <summary><span class="method method-get">GET</span><span class="path">/api/v1/msp-companies/:id</span><span class="desc">Detail + daftar sub-dealer</span><span class="chev">▶</span></summary>
+        <div class="body">
+          <h5><span class="pill pill-pk">200</span> OK</h5>
+          <pre class="code-block">{
+  "message": "msp company retrieved",
+  "data": {
+    "id": "556800000000000001",
+    "code": "MSP-A001",
+    "name": "Company A",
+    "msp_tree": "556800000000000001/",
+    "msp_status": 2,
+    "msp_status_name": "ACTIVE",
+    "created_at": "2026-07-20T03:12:00Z",
+    "child": [
+      {
+        "id": "556800000000000002",
+        "parent_id": "556800000000000001",
+        "code": "MSP-A001-SUB1",
+        "name": "Sub-Dealer 1",
+        "msp_tree": "556800000000000001/556800000000000002/",
+        "msp_status": 2,
+        "msp_status_name": "ACTIVE",
+        "created_at": "2026-07-22T01:00:00Z"
+      }
+    ]
+  }
+}</pre>
+          <h5><span class="pill pill-idle">404</span> Not Found</h5>
+          <pre class="code-block">{ "message": "msp company not found", "errors": null }</pre>
+        </div>
+      </details>
+
+      <details class="endpoint">
+        <summary><span class="method method-post">POST</span><span class="path">/api/v1/msp-companies</span><span class="desc">Buat company baru</span><span class="chev">▶</span></summary>
+        <div class="body">
+          <h5>Request Body</h5>
+          <pre class="code-block">{
+  "code": "MSP-NEWCO",
+  "name": "New MSP Partner",
+  "parent_id": null   // opsional -- isi id company top-level untuk buat sub-dealer
+}</pre>
+          <h5><span class="pill pill-pk">201</span> Created</h5>
+          <pre class="code-block">{
+  "message": "msp company created successfully",
+  "data": { "id": "556800000000000003" }
+}</pre>
+          <h5><span class="pill pill-warn">400</span> Bad Request</h5>
+          <pre class="code-block">{ "message": "parent msp company not found", "errors": null }
+// atau: "sub-dealer msp company cannot have its own sub-dealer"
+// atau: validasi field (code/name kosong atau > batas panjang)</pre>
+          <h5><span class="pill pill-danger">409</span> Conflict</h5>
+          <pre class="code-block">{ "message": "msp company code already exists", "errors": null }</pre>
+        </div>
+      </details>
+
+      <details class="endpoint">
+        <summary><span class="method method-put">PUT</span><span class="path">/api/v1/msp-companies/:id</span><span class="desc">Update, reparent, atau clear_parent</span><span class="chev">▶</span></summary>
+        <div class="body">
+          <h5>Request Body</h5>
+          <pre class="code-block">{
+  "code": "MSP-A001",
+  "name": "Company A (Updated)",
+  "msp_status": 2,
+  "parent_id": null,       // tidak dikirim/kosong = induk lama dipertahankan
+  "clear_parent": false    // true = lepas ke top-level, tidak boleh bareng parent_id
+}</pre>
+          <h5><span class="pill pill-pk">200</span> OK</h5>
+          <pre class="code-block">{ "message": "msp company updated successfully" }</pre>
+          <h5><span class="pill pill-warn">400</span> Bad Request</h5>
+          <pre class="code-block">{ "message": "cannot set parent_id and clear_parent at the same time", "errors": null }
+// atau: "msp company cannot be its own parent"
+// atau: "parent msp company not found"
+// atau: "cannot set parent to a descendant of itself"
+// atau: "sub-dealer msp company cannot have its own sub-dealer"
+// atau: "msp company with its own sub-dealers cannot be assigned a parent"</pre>
+          <h5><span class="pill pill-idle">404</span> Not Found</h5>
+          <pre class="code-block">{ "message": "msp company not found", "errors": null }</pre>
+          <h5><span class="pill pill-danger">409</span> Conflict</h5>
+          <pre class="code-block">{ "message": "msp company code already exists", "errors": null }</pre>
+        </div>
+      </details>
+
+      <details class="endpoint">
+        <summary><span class="method method-delete">DELETE</span><span class="path">/api/v1/msp-companies/:id</span><span class="desc">Soft delete</span><span class="chev">▶</span></summary>
+        <div class="body">
+          <h5><span class="pill pill-pk">200</span> OK</h5>
+          <pre class="code-block">{ "message": "msp company deleted successfully" }</pre>
+          <h5><span class="pill pill-idle">404</span> Not Found</h5>
+          <pre class="code-block">{ "message": "msp company not found", "errors": null }</pre>
+          <h5><span class="pill pill-danger">409</span> Conflict</h5>
+          <pre class="code-block">{ "message": "cannot delete msp company that has sub-dealers", "errors": null }
+// atau: "cannot delete msp company that still has linked users"</pre>
+        </div>
+      </details>
     </section>
 
     <section id="status">
