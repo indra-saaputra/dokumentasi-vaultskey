@@ -1,0 +1,1379 @@
+<!doctype html><html><head><!-- frame-runtime --><script>window.__FRAME_PREAMBLE={"capabilities":{"db":"db.CfOZ1CRq.js","downloads":"downloads.BXsoAvg9.js","mcp":"mcp.CjxgyTlr.js","permissions":"permissions.DdITF2Mk.js","self":"self.DtZoNC4q.js","user":"user.Cr_h1ETf.js"},"transforms":"_transforms.VaITkagF.js","comments":"_comments.XY398Yit.js","translate":"_translate.BOzFH2D9.js"}</script><script>(function(){"use strict";var re=["light","dark","system"];function ne(e){if(e===null||typeof e!="object")return!1;const t=e.__frame_init;return t!==null&&typeof t=="object"}function Y(e){return e!==null&&typeof e=="object"&&e.__frame_size_poke===!0}function se(e){if(e===null||typeof e!="object")return!1;const t=e.__frame_theme;if(t===null||typeof t!="object")return!1;const r=t.theme;return typeof r=="string"&&re.includes(r)}function oe(e){try{typeof reportError=="function"?reportError(e):setTimeout(()=>{throw e},0)}catch{}}var K=Object.freeze(Object.assign(Object.create(null),{user:Object.freeze(Object.assign(Object.create(null),{id:null,isOwner:!1,canEdit:!1,name:null,avatarUrl:null,email:null}))}));function x(e){if(window===top||e.type==="auxclick"&&e.button!==1)return;const t=e.composedPath?e.composedPath():[e.target];let r=null;for(let f=0;f<t.length;f++){const a=t[f];if(a&&a.matches&&a.matches("a[href],area[href]")){r=a;break}}if(!r&&e.target&&e.target.closest&&(r=e.target.closest("a[href],area[href]")),!r)return;const c=r.getAttribute("href");if(!c)return;let i,s;try{i=new URL(c,document.baseURI),s=new URL(document.baseURI).origin}catch{return}(i.protocol==="http:"||i.protocol==="https:")&&i.origin!==s&&(e.preventDefault(),parent.postMessage({__frame_nav:!0,url:i.href},"*"))}var J={};function I(e){if(window===top)return;const t=Date.now();t-(J[e]||0)<500||(J[e]=t,parent.postMessage({__frame_engaged:!0,kind:e},"*"))}var ie=2e3,G=["wheel","touchstart","touchmove","keydown","pointerdown"],X=0;function ae(e){e.isTrusted&&(X=Date.now())}function ce(){addEventListener("click",x,!0),addEventListener("auxclick",x,!0)}function le(){for(let e=0;e<G.length;e++)addEventListener(G[e],ae,{capture:!0,passive:!0});addEventListener("scroll",e=>{e.isTrusted&&Date.now()-X<ie&&I("scroll")},{capture:!0,passive:!0}),addEventListener("pointermove",e=>{e.isTrusted&&I("pointer")},{capture:!0,passive:!0}),addEventListener("click",e=>{e.isTrusted&&I("click")},{capture:!0,passive:!0})}var D="__frame_scroll",ue=150,fe=310,de=160,pe=3e4;function me(){let e=0,t=!1,r=!1,c=!1,i=0;const s=p=>{try{sessionStorage.setItem(D,JSON.stringify({y:p}))}catch{}},f=()=>{if(t){t=!1;return}r=!0,clearTimeout(e),e=setTimeout(()=>s(scrollY),ue)};try{addEventListener("scroll",f,{passive:!0}),addEventListener("pagehide",()=>{clearTimeout(e),s(scrollY)})}catch{}const a=()=>{let p;try{p=sessionStorage.getItem(D)}catch{return null}if(p===null)return null;let h;try{h=JSON.parse(p)}catch{h=null}const u=h?.y;if(!(typeof u=="number"&&Number.isFinite(u)&&u>=0)){try{sessionStorage.removeItem(D)}catch{}return null}return u};let _=!1;const y=p=>{try{const h=scrollY;scrollTo({top:p,left:0,behavior:"instant"}),i=p,c=!0,s(p);const u=scrollY;u!==h&&(t=!0),u!==p&&!_&&(_=!0,addEventListener("load",()=>{try{if(scrollY===u){const g=a();y(g!==null?g:i)}}catch{}},{once:!0}))}catch{}},o=()=>{try{return!!location.hash}catch{return!0}};let l=!1;const d=()=>{try{if(l||innerWidth>fe||innerHeight>de)return;l=!0;const p=Date.now(),h=()=>{try{removeEventListener("resize",h)}catch{}if(Date.now()-p>pe||r||o())return;const u=a();y(u!==null?u:i)};addEventListener("resize",h)}catch{}};let m=!1,v=!1;return{restore(){if(m||(m=!0,o()))return;const p=a();p!==null&&(y(p),d())},promoted(){if(v||(v=!0,o()))return;const p=a();p!==null?(y(p),d()):c&&y(i)}}}function he(e,t,r){const c=[...t.values()].filter(i=>i.targets.some(s=>s.startsWith(e+".")));return{wrap(i,s){const f=`${e}.${i}`,a=c.filter(_=>_.targets.includes(f));return a.length===0?(..._)=>{try{return s(..._)}catch(y){return Promise.reject(y)}}:(..._)=>{let y=_;for(const l of a){const d=l.module.parameters;if(d)try{y=d(y)}catch{return Promise.reject({code:"transform_error",id:l.id,scope:e,message:"parameters transform failed"})}}let o;try{o=s(...y)}catch(l){o=Promise.reject(l)}return o.then(l=>{for(let d=a.length-1;d>=0;d--){const m=a[d],v=m.module.returns;if(v)try{l=v(l)}catch{return r({id:m.id,scope:e,leg:"returns"}),l}}return l},l=>{for(let d=a.length-1;d>=0;d--){const m=a[d],v=m.module.throws;if(v)try{l=v(l)}catch{return r({id:m.id,scope:e,leg:"throws"}),Promise.reject(l)}}return Promise.reject(l)})}}}}function ge(e,t,r,c=()=>{}){const i=new Set(e.changes??[]),s=new Map;for(const f of i){const a=t[f];a&&s.set(f,a)}return{contract:e.contract,changes:i,flags:new Set(e.flags??[]),capabilities:e.capabilities??{},capBudgets:e.capBudgets??{},transforms:s,shellOrigin:r.shellOrigin,mount:r.mount,pipe:f=>he(f,s,c)}}var we="modulepreload",Oe=function(e){return"/"+e},Se={},ve=function(t,r,c){let i=Promise.resolve();function s(f){const a=new Event("vite:preloadError",{cancelable:!0});if(a.payload=f,window.dispatchEvent(a),!a.defaultPrevented)throw f}return i.then(f=>{for(const a of f||[])a.status==="rejected"&&s(a.reason);return t().catch(s)})};(function(){const e=Object.defineProperty,t=globalThis,r=["RTCPeerConnection","webkitRTCPeerConnection","RTCDataChannel","RTCIceCandidate","RTCSessionDescription","RTCRtpSender","RTCRtpReceiver"];let c=0;for(let i=0;i<r.length;i++){const s=r[i];try{e(t,s,{value:void 0,writable:!1,configurable:!1})}catch{try{delete t[s]}catch{}try{e(t,s,{value:void 0,writable:!1,configurable:!0})}catch{}}typeof t[s]=="function"&&c++}if(c&&window!==top)try{parent.postMessage({__frame_rtc_lockdown_failed:c},"*")}catch{}})();var _e=1e4,ye=Object.freeze([...window.__FRAME_PREAMBLE?.origins??["https://claude.ai","https://preview.claude.ai"]]);function Q(e){for(const t of ye)if(t.endsWith(":*"))try{const r=new URL(e);if(`${r.protocol}//${r.hostname}:*`===t)return!0}catch{}else if(e===t)return!0;return!1}var k=Object.freeze({...window.__FRAME_PREAMBLE?.capabilities}),q=window.__FRAME_PREAMBLE?.transforms,z=window.__FRAME_PREAMBLE?.comments,$=window.__FRAME_PREAMBLE?.translate,N=/^[\w.-]+\.js$/,be=/^[a-z][a-z0-9_-]{0,63}$/,V=null,M=null;function B(e,t,r){try{Object.defineProperty(e,t,{value:r,writable:!1,configurable:!1,enumerable:!0})}catch{try{Object.defineProperty(e,t,{value:r,writable:!1,configurable:!0,enumerable:!0})}catch{}}}var F=!1;function Z(e){const t=document.documentElement;e==="light"||e==="dark"?(t.dataset.theme=e,t.style.colorScheme=e,F=!0):F&&(delete t.dataset.theme,t.style.colorScheme="",F=!1)}var ee=256,R=Object.assign(Object.create(null),{mcp:Object.assign(Object.create(null),{watchTool:{handlerArg:3}})}),L=new Map;function te(e,t){const r=L.get(e);if(!r)return;const c=Object.assign(Object.create(null),t);Object.assign(r.impl,c),r.impl.__settled=()=>Promise.reject({code:"capability_removed",message:`${e}: method not in this runtime`});const i=r.queue;r.queue=[];for(const s of i){const f=c[s.method];if(f)if(R[e]?.[s.method])try{s.resolve(f(...s.args))}catch{T(s,R[e][s.method].handlerArg,{code:"transform_error",message:`${e}.${s.method} rejected its arguments`})}else f(...s.args).then(s.resolve,s.reject);else{const a={code:"capability_removed",message:`${e}.${s.method} is not in this runtime`},_=R[e]?.[s.method];if(_){T(s,_.handlerArg,a);continue}s.reject(a)}}}function Ee(e,t){const r=L.get(e);if(!r)return;r.impl.__settled=()=>Promise.reject(t);const c=r.queue;r.queue=[];for(const i of c){const s=R[e]?.[i.method];if(s){T(i,s.handlerArg,t);continue}i.reject(t)}}function C(e,t){const r=K[e];if(!r){Ee(e,t);return}te(e,Object.fromEntries(Object.entries(r).map(([c,i])=>[c,()=>Promise.resolve(i)])))}function T(e,t,r){if(e.syncState?.dead)return;const c=e.args[t];typeof c=="function"&&queueMicrotask(()=>{if(!e.syncState?.dead)try{c({type:"error",error:r})}catch(i){oe(i)}})}var H=Object.getOwnPropertyDescriptor(window,"claude");if(window!==top&&!(H&&H.writable===!1)){ce(),le();let e=null;try{e=me()}catch{}const t=H?.value??{};B(window,"claude",t);const r=o=>{const l={impl:Object.create(null),queue:[]};L.set(o,l);const d=l.impl,m=h=>({code:"queue_overflow",message:`${o}.${h}: pre-init call queue is full`}),v=(h,u)=>{if(l.queue.length>=ee){const g=K[o];return g&&h in g?Promise.resolve(g[h]):Promise.reject(m(h))}return new Promise((g,b)=>{l.queue.push({method:h,args:u,resolve:g,reject:b})})},p=new Proxy(d,{get:(h,u)=>{if(typeof u!="string"||u==="then"||u==="toJSON"||u==="valueOf")return;if(u==="toString")return Object.prototype.toString;const g=R[o]?.[u];return g?(...b)=>{if(typeof b[g.handlerArg]!="function")throw new TypeError(`${o}.${u} requires a handler function`);const S=d[u];if(S)return S(...b);if(d.__settled){const E={dead:!1},P={args:[...b],syncState:E};return d.__settled().catch(U=>T(P,g.handlerArg,U)),()=>{E.dead=!0}}if(l.queue.length>=ee){const E={dead:!1};return T({args:[...b],syncState:E},g.handlerArg,m(u)),()=>{E.dead=!0}}let w=null;const j={dead:!1};return l.queue.push({method:u,args:b,resolve:E=>{w=typeof E=="function"?E:null,j.dead&&w?.()},reject:()=>{},syncState:j}),()=>{j.dead=!0,w?.()}}:(...b)=>{const S=d[u]??d.__settled;return S?S(...b):v(u,b)}},set:()=>!1});B(t,o,p)};for(const o of Object.keys(k)){if(t[o]!==void 0){B(t,o,t[o]);continue}r(o)}let c=null,i=null,s=0;const f=o=>{o.source!==parent||!Q(o.origin)||ne(o.data)&&(c=o.data.__frame_init,M=o.origin,removeEventListener("message",f),clearTimeout(s),i?.())};addEventListener("message",f),parent.postMessage({__frame_connect:!0},"*");const a=new Promise(o=>{i=o,s=setTimeout(()=>{removeEventListener("message",f),o()},_e)}),_=document.readyState==="loading"?new Promise(o=>document.addEventListener("DOMContentLoaded",()=>o(),{once:!0})):Promise.resolve();_.then(()=>{try{e?.restore()}catch{}});const y=o=>{if(!(o.source!==parent||!Q(o.origin))&&Y(o.data)){removeEventListener("message",y);try{e?.promoted()}catch{}}};addEventListener("message",y),a.then(async()=>{if(!c||!M){for(const n of L.keys())C(n,{code:"not_granted",message:"frame initialization did not arrive - capability unavailable"});return}Z(c.theme);const o=M;let l=!1,d=!1;addEventListener("message",n=>{if(n.source!==parent||n.origin!==o)return;se(n.data)&&Z(n.data.__frame_theme.theme);const O=n.data?.__fc_mode;O&&typeof O=="object"&&!l&&z&&N.test(z)&&(l=!0,m(z).then(W=>W.install?.(o,O.on===!0)).catch(()=>{}));const A=n.data?.__ft_cmd;A&&typeof A=="object"&&!d&&$&&N.test($)&&(d=!0,m($).then(W=>W.install?.(o,A)).catch(()=>{}))});const m=n=>ve(()=>import("/_runtime/"+n),void 0),v=Object.keys(c.capabilities??{});for(const n of v)Object.hasOwn(k,n)||be.test(n)&&t[n]===void 0&&(r(n),C(n,{code:"capability_disabled",message:"capability not in this runtime generation"}));const p=v.filter(n=>Object.hasOwn(k,n)).map(n=>[n,k[n]]).filter(n=>typeof n[1]=="string"&&N.test(n[1])),[h,...u]=await Promise.allSettled([q&&N.test(q)?m(q):Promise.resolve({}),...p.map(([,n])=>m(n))]),g=M;V=ge(c,h.status==="fulfilled"&&h.value?.TRANSFORMS||{},{shellOrigin:g,mount:te},n=>parent.postMessage({__frame_cap_telemetry:n},g));const b=n=>parent.postMessage({__frame_cap_telemetry:{kind:"cap-load-error",cap:n}},g),S=V;u.forEach((n,O)=>{const A=p[O][0];if(n.status!=="fulfilled"){b(A);return}try{n.value?.install?.(S)}catch{b(A)}});for(const[n,O]of L)if(!(O.queue.length===0&&Object.keys(O.impl).length>0)){if(v.includes(n)){C(n,{code:"capability_disabled",message:"capability not available in this session"});continue}C(n,{code:"not_granted",message:"capability not available in this session"})}await _,parent.postMessage({__frame_ready:!0},M);let w=-1,j=0;const E=()=>{j=0;const n=Math.max(document.documentElement.scrollHeight,document.body?document.body.scrollHeight:0);n!==w&&(w=n,parent.postMessage({__frame_size:!0,h:n},g))},P=()=>{j||(j=setTimeout(E,200))},U=new ResizeObserver(P);U.observe(document.documentElement),document.body&&U.observe(document.body),document.addEventListener("load",P,!0),document.fonts?.ready.then(P,()=>{}),addEventListener("beforeprint",()=>{w=-1,E()}),P(),addEventListener("message",n=>{if(!(n.source!==parent||n.origin!==g)&&Y(n.data)){try{e?.promoted()}catch{}w=-1,P()}})})}})();</script><!-- /frame-runtime --><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1"><style>:root{color-scheme:light}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}</style></head><body>
+<title>MSP Master & user_msp — Laporan Hasil Testing</title>
+<style>
+  :root {
+    --bg: #F6F4EF;
+    --bg-raised: #FDFCF9;
+    --ink: #24211A;
+    --ink-dim: #6B6605;
+    --line: #DEDACD;
+    --line-soft: #E9E5D9;
+    --principal: #4338CA;
+    --principal-soft: #ECEAFB;
+    --msp: #A15C07;
+    --msp-soft: #F7ECD8;
+    --pk: #146C43;
+    --pk-soft: #E4F3E9;
+    --warn: #A15C07;
+    --warn-soft: #F7ECD8;
+    --danger: #B3261E;
+    --danger-soft: #FBEAE8;
+    --idle: #6B6605;
+    --idle-soft: #ECE9DF;
+    --code-bg: #EFEBDC;
+    --shadow: 0 1px 2px rgba(36,33,26,0.06), 0 8px 24px -12px rgba(36,33,26,0.12);
+    --mono: ui-monospace, "SF Mono", "Cascadia Code", "JetBrains Mono", Consolas, monospace;
+    --sans: -apple-system, "Segoe UI", "Helvetica Neue", Roboto, Arial, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #17140F; --bg-raised: #1E1B14; --ink: #ECE7D9; --ink-dim: #A39D89;
+      --line: #37331F; --line-soft: #2B2818; --principal: #A5A0F5; --principal-soft: #26234A;
+      --msp: #E0A94D; --msp-soft: #3A2E14; --pk: #6FCF97; --pk-soft: #17301F;
+      --warn: #E0A94D; --warn-soft: #3A2E14; --danger: #F0857C; --danger-soft: #3B1B18;
+      --idle: #A39D89; --idle-soft: #26231A; --code-bg: #221F16;
+      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 24px -12px rgba(0,0,0,0.5);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #17140F; --bg-raised: #1E1B14; --ink: #ECE7D9; --ink-dim: #A39D89;
+    --line: #37331F; --line-soft: #2B2818; --principal: #A5A0F5; --principal-soft: #26234A;
+    --msp: #E0A94D; --msp-soft: #3A2E14; --pk: #6FCF97; --pk-soft: #17301F;
+    --warn: #E0A94D; --warn-soft: #3A2E14; --danger: #F0857C; --danger-soft: #3B1B18;
+    --idle: #A39D89; --idle-soft: #26231A; --code-bg: #221F16;
+    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 24px -12px rgba(0,0,0,0.5);
+  }
+  :root[data-theme="light"] {
+    --bg: #F6F4EF; --bg-raised: #FDFCF9; --ink: #24211A; --ink-dim: #6B6605;
+    --line: #DEDACD; --line-soft: #E9E5D9; --principal: #4338CA; --principal-soft: #ECEAFB;
+    --msp: #A15C07; --msp-soft: #F7ECD8; --pk: #146C43; --pk-soft: #E4F3E9;
+    --warn: #A15C07; --warn-soft: #F7ECD8; --danger: #B3261E; --danger-soft: #FBEAE8;
+    --idle: #6B6605; --idle-soft: #ECE9DF; --code-bg: #EFEBDC;
+    --shadow: 0 1px 2px rgba(36,33,26,0.06), 0 8px 24px -12px rgba(36,33,26,0.12);
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    line-height: 1.6;
+    font-size: 15.5px;
+  }
+  a { color: var(--principal); }
+  h1, h2, h3, h4 { text-wrap: balance; font-weight: 700; letter-spacing: -0.01em; }
+  code, .mono { font-family: var(--mono); }
+
+  .shell {
+    display: grid;
+    grid-template-columns: 250px minmax(0, 1fr);
+    max-width: 1320px;
+    margin: 0 auto;
+  }
+  @media (max-width: 920px) {
+    .shell { grid-template-columns: 1fr; }
+    nav.toc { display: none; }
+  }
+
+  nav.toc {
+    position: sticky;
+    top: 0;
+    align-self: start;
+    height: 100vh;
+    overflow-y: auto;
+    padding: 32px 20px 32px 28px;
+    border-right: 1px solid var(--line);
+  }
+  nav.toc .brand {
+    font-family: var(--mono);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--ink-dim);
+    margin-bottom: 22px;
+  }
+  nav.toc .brand strong { color: var(--ink); }
+  nav.toc a {
+    display: block;
+    font-size: 13px;
+    color: var(--ink-dim);
+    text-decoration: none;
+    padding: 5px 0;
+    border-left: 2px solid transparent;
+    padding-left: 10px;
+    margin-left: -12px;
+  }
+  nav.toc a:hover { color: var(--ink); }
+  nav.toc .grp { margin-bottom: 18px; }
+  nav.toc .grp-label {
+    font-family: var(--mono); font-size: 10.5px; text-transform: uppercase;
+    letter-spacing: 0.08em; color: var(--ink-dim); opacity: 0.65; margin: 0 0 4px 0;
+  }
+
+  main { padding: 44px 40px 120px; min-width: 0; }
+  @media (max-width: 640px) { main { padding: 32px 18px 100px; } }
+
+  header.hero { padding-bottom: 8px; margin-bottom: 40px; }
+  .eyebrow {
+    font-family: var(--mono); font-size: 12px; text-transform: uppercase;
+    letter-spacing: 0.1em; color: var(--msp); margin: 0 0 10px;
+  }
+  header.hero h1 { font-size: 30px; margin: 0 0 10px; }
+  header.hero .sub { color: var(--ink-dim); font-size: 15.5px; max-width: 68ch; margin: 0 0 24px; }
+
+  .scorecard {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 8px;
+  }
+  @media (max-width: 700px) { .scorecard { grid-template-columns: 1fr; } }
+  .score-cell { background: var(--bg-raised); padding: 20px 18px; }
+  .score-cell .num { font-family: var(--mono); font-size: 30px; font-weight: 700; line-height: 1; }
+  .score-cell .num.pk { color: var(--pk); }
+  .score-cell .label { font-size: 12px; color: var(--ink-dim); margin-top: 6px; }
+
+  section { margin-bottom: 56px; scroll-margin-top: 24px; }
+  section > h2 {
+    font-size: 21px; display: flex; align-items: baseline; gap: 10px; margin: 0 0 6px;
+  }
+  section > h2 .num { font-family: var(--mono); font-size: 13px; color: var(--ink-dim); font-weight: 500; }
+  section > .lede { color: var(--ink-dim); max-width: 72ch; margin: 0 0 22px; }
+  h3 { font-size: 16.5px; margin: 30px 0 8px; display: flex; align-items: center; }
+  h3 .count { font-family: var(--mono); font-size: 11.5px; font-weight: 600; color: var(--ink-dim); background: var(--code-bg); padding: 2px 8px; border-radius: 100px; margin-left: 8px; }
+  .section-intro { color: var(--ink-dim); font-size: 14px; max-width: 72ch; margin: 0 0 16px; }
+  p { max-width: 72ch; }
+
+  .pill {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-family: var(--mono); font-size: 11.5px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.04em;
+    padding: 3px 9px; border-radius: 100px;
+  }
+  .pill-pk { background: var(--pk-soft); color: var(--pk); }
+  .pill-warn { background: var(--warn-soft); color: var(--warn); }
+  .pill-danger { background: var(--danger-soft); color: var(--danger); }
+  .pill-idle { background: var(--idle-soft); color: var(--idle); }
+  .pill-principal { background: var(--principal-soft); color: var(--principal); }
+  .pill::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
+
+  .table-wrap { overflow-x: auto; margin: 14px 0 8px; border: 1px solid var(--line); border-radius: 8px; }
+  table.data { width: 100%; border-collapse: collapse; font-size: 13.5px; min-width: 560px; }
+  table.data th {
+    font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em;
+    text-align: left; color: var(--ink-dim); background: var(--code-bg);
+    padding: 10px 14px; border-bottom: 1px solid var(--line);
+  }
+  table.data td { padding: 11px 14px; border-bottom: 1px solid var(--line-soft); vertical-align: top; }
+  table.data tr:last-child td { border-bottom: none; }
+  table.data tr:hover td { background: var(--bg-raised); }
+
+  /* expandable test case */
+  .test-list { display: flex; flex-direction: column; gap: 8px; margin: 14px 0 8px; }
+  details.test-case {
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--bg-raised);
+    overflow: hidden;
+  }
+  details.test-case summary {
+    list-style: none;
+    cursor: pointer;
+    padding: 12px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 14px;
+    font-size: 13.5px;
+  }
+  details.test-case summary::-webkit-details-marker { display: none; }
+  details.test-case summary::marker { content: ""; }
+  .tc-kondisi { flex: 1 1 auto; min-width: 0; }
+  .tc-right { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+  .tc-hasil { color: var(--ink-dim); font-size: 12.5px; white-space: nowrap; }
+  @media (max-width: 760px) { .tc-hasil { display: none; } }
+  .tc-toggle {
+    font-family: var(--mono); font-size: 11px; color: var(--principal);
+    white-space: nowrap; border: 1px solid var(--line); border-radius: 100px;
+    padding: 3px 9px;
+  }
+  details.test-case[open] .tc-toggle::after { content: " ▴"; }
+  details.test-case:not([open]) .tc-toggle::after { content: " ▾"; }
+  .tc-body { padding: 4px 16px 16px; border-top: 1px solid var(--line-soft); }
+  .tc-body .tc-note { font-size: 12.5px; color: var(--ink-dim); margin: 10px 0 0; }
+  pre.curl {
+    background: var(--code-bg);
+    padding: 12px 14px;
+    border-radius: 6px;
+    font-family: var(--mono);
+    font-size: 12px;
+    line-height: 1.60;
+    overflow-x: auto;
+    white-space: pre;
+    margin: 12px 0 8px;
+  }
+  .tc-expected {
+    font-size: 12.5px; color: var(--ink-dim);
+    display: flex; align-items: center; gap: 6px;
+  }
+  .tc-expected code { color: var(--ink); }
+
+  .callout {
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--pk);
+    background: var(--bg-raised);
+    border-radius: 6px;
+    padding: 16px 18px;
+    margin: 18px 0;
+    font-size: 14px;
+    max-width: 74ch;
+  }
+  .callout.principal { border-left-color: var(--principal); }
+  .callout .label {
+    font-family: var(--mono); font-size: 11px; text-transform: uppercase;
+    letter-spacing: 0.06em; color: var(--ink-dim); margin-bottom: 6px; display: block;
+  }
+  .callout p:last-child { margin-bottom: 0; }
+
+  code.inline { background: var(--code-bg); padding: 1px 6px; border-radius: 4px; font-size: 0.88em; }
+
+  footer {
+    border-top: 1px solid var(--line);
+    padding-top: 20px;
+    margin-top: 60px;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--ink-dim);
+  }
+  ::selection { background: var(--principal-soft); }
+</style>
+
+<div class="shell">
+  <nav class="toc">
+    <div class="brand"><strong>VaultKey</strong> · Laporan Testing</div>
+    <div class="grp">
+      <p class="grp-label">Ringkasan</p>
+      <a href="#ringkasan">Ringkasan Eksekutif</a>
+      <a href="#cakupan">Apa yang Diuji</a>
+      <a href="#persiapan">Persiapan Sebelum Test Ulang</a>
+    </div>
+    <div class="grp">
+      <p class="grp-label">Hasil Detail</p>
+      <a href="#msp-master">MSP Master</a>
+      <a href="#user-msp">Manajemen User MSP</a>
+      <a href="#gating">Kontrol Akses</a>
+    </div>
+    <div class="grp">
+      <p class="grp-label">Penutup</p>
+      <a href="#kesimpulan">Kesimpulan</a>
+    </div>
+  </nav>
+
+  <main>
+    <header class="hero">
+      <p class="eyebrow">crm-vaultkey-rbac-backend · Modul MSP</p>
+      <h1>Laporan Hasil Testing — MSP Master &amp; User MSP</h1>
+      <p class="sub">Pengujian menyeluruh terhadap modul pengelolaan perusahaan MSP (Managed Service Provider) dan user MSP, mencakup skenario normal maupun skenario percobaan penyalahgunaan/kesalahan input. Setiap skenario di laporan ini bisa dibuka untuk melihat perintah <code class="inline">cURL</code>-nya dan dites ulang langsung (juga bisa ditempel ke Postman).</p>
+
+      <div class="scorecard">
+        <div class="score-cell">
+          <div class="num pk">76</div>
+          <div class="label">Skenario diuji</div>
+        </div>
+        <div class="score-cell">
+          <div class="num pk">76 / 76</div>
+          <div class="label">Sesuai ekspektasi</div>
+        </div>
+        <div class="score-cell">
+          <div class="num pk">3</div>
+          <div class="label">Area utama tercakup</div>
+        </div>
+      </div>
+    </header>
+
+    <section id="ringkasan">
+      <h2><span class="num">01</span> Ringkasan Eksekutif</h2>
+      <p>Modul MSP Master (data perusahaan mitra MSP) dan pengelolaan user MSP sudah melalui pengujian menyeluruh terhadap sistem yang benar-benar berjalan — bukan simulasi. Setiap fungsi diuji dari dua sisi: <strong>skenario yang seharusnya berhasil</strong> (misalnya membuat perusahaan baru dengan data valid) dan <strong>skenario yang seharusnya ditolak sistem</strong> (misalnya kode perusahaan yang sudah dipakai, atau user tanpa izin akses yang mencoba masuk).</p>
+      <p>Seluruh 76 skenario yang diuji menunjukkan hasil yang sesuai dengan aturan bisnis yang sudah disepakati. Sistem konsisten menolak input yang tidak valid, menjaga struktur hierarki perusahaan sesuai batasan yang ditetapkan, dan memastikan akses hanya diberikan ke perusahaan/user yang berstatus aktif.</p>
+    </section>
+
+    <section id="cakupan">
+      <h2><span class="num">02</span> Apa yang Diuji</h2>
+      <p class="lede">Tiga area utama, masing-masing diuji dari sisi data, aturan bisnis, dan keamanan akses.</p>
+      <div class="table-wrap">
+        <table class="data">
+          <thead><tr><th>Area</th><th>Yang Dicakup</th><th>Jumlah Skenario</th></tr></thead>
+          <tbody>
+            <tr><td><strong>MSP Master</strong></td><td>Pengelolaan data perusahaan MSP — struktur hierarki (perusahaan induk/sub-dealer), operasi tambah/ubah/hapus, dan aturan keamanan data</td><td class="mono">34</td></tr>
+            <tr><td><strong>User MSP</strong></td><td>Pengelolaan akun user yang bekerja di bawah perusahaan MSP — pendaftaran, kategori (Agent/Technician), keterkaitan ke perusahaan</td><td class="mono">32</td></tr>
+            <tr><td><strong>Kontrol Akses</strong></td><td>Memastikan akses (login, penggunaan sesi, dan pengecekan dari aplikasi eksternal) mengikuti status perusahaan MSP secara real-time</td><td class="mono">10</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="persiapan">
+      <h2><span class="num">03</span> Persiapan Sebelum Test Ulang</h2>
+      <p class="lede">Semua perintah <code class="inline">cURL</code> di laporan ini pakai variabel bergaya Postman (<code class="inline">{{variabel}}</code>) supaya bisa langsung ditempel ke Postman Environment. Isi dulu variabel berikut sebelum mulai.</p>
+      <div class="table-wrap">
+        <table class="data">
+          <thead><tr><th>Variabel</th><th>Cara Mendapatkan</th></tr></thead>
+          <tbody>
+            <tr><td class="mono">base_url</td><td>Alamat server, contoh <code class="inline">http://localhost:8080</code></td></tr>
+            <tr><td class="mono">token</td><td>Login pakai akun yang punya akses penuh (lihat contoh di bawah), ambil <code class="inline">accessToken</code> dari respons</td></tr>
+            <tr><td class="mono">token_no_access</td><td>Login pakai akun biasa yang <em>sengaja belum</em> diberi izin ke modul MSP Master / User MSP — dipakai khusus untuk skenario "ditolak karena tidak punya akses"</td></tr>
+            <tr><td class="mono">api_key</td><td>API key untuk endpoint yang dipakai aplikasi eksternal (<code class="inline">X-API-KEY</code>)</td></tr>
+            <tr><td class="mono">application_id</td><td>ID aplikasi yang dipakai saat login / cek eksternal</td></tr>
+            <tr><td class="mono">company_id</td><td>ID sebuah perusahaan MSP top-level yang sudah ada (atau hasil dari skenario Create di §05)</td></tr>
+            <tr><td class="mono">company_id_2</td><td>ID perusahaan MSP top-level kedua, dipakai untuk skenario pindah induk</td></tr>
+            <tr><td class="mono">subdealer_id</td><td>ID sub-dealer di bawah <code class="inline">company_id</code></td></tr>
+            <tr><td class="mono">msp_user_id</td><td>ID user MSP yang sudah ada (atau hasil dari skenario Create di §06)</td></tr>
+            <tr><td class="mono">agent_id</td><td><code class="inline">agent_id</code> milik user MSP yang sudah ada, dipakai untuk lookup dari aplikasi eksternal</td></tr>
+            <tr><td class="mono">category_id</td><td><code class="inline">1</code> untuk Agent, <code class="inline">2</code> untuk Technician</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="tc-body" style="padding:0;">
+        <pre class="curl">curl -X POST "{{base_url}}/api/v1/auth/login?aid={{application_id}}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "identifier": "email-akun-anda@example.com",
+    "password": "password-akun-anda",
+    "device_info": {
+      "unique_device_id": "qa-retest-01",
+      "device_name": "QA Retest",
+      "device_type_id": 1
+    }
+  }'</pre>
+      </div>
+      <p class="tc-note" style="max-width:72ch;">Ambil nilai <code class="inline">data.accessToken</code> dari respons login, itulah yang dipakai sebagai <code class="inline">{{token}}</code> di seluruh perintah berikut.</p>
+    </section>
+
+    <section id="msp-master">
+      <h2><span class="num">04</span> Hasil Detail — MSP Master</h2>
+
+      <h3>Struktur Hierarki Perusahaan<span class="count">15 skenario</span></h3>
+      <p class="section-intro">Kebijakan bisnisnya: perusahaan MSP boleh punya sub-dealer, tapi maksimal 2 tingkat (sub-dealer tidak boleh punya sub-dealer lagi). Bagian ini menguji apakah sistem benar-benar menegakkan batasan tersebut, termasuk saat perusahaan dipindah-pindah posisinya dalam struktur.</p>
+
+      <div class="test-list">
+        <details class="test-case">
+          <summary><span class="tc-kondisi">Membuat perusahaan baru sebagai entitas mandiri (tanpa induk)</span><span class="tc-right"><span class="tc-hasil">Berhasil dibuat</span><span class="pill pill-pk">Sesuai</span><span class="tc-toggle">cURL</span></span></summary>
+          <div class="tc-body">
+            <pre class="curl">curl -X POST "{{base_url}}/api/v1/msp-companies/" \
+  -H "Authorization: Bearer {{token}}" \
+  -H "Content-Type: application/json" \
+  -d '{"code":"MSP-DEMO-01","name":"Demo Company 1"}'</pre>
+            <div class="tc-expected">Respons yang diharapkan: <code>201 Created</code></div>
+          </div>
+        </details>
+
+        <details class="test-case">
+          <summary><span class="tc-kondisi">Membuat sub-dealer di bawah perusahaan yang sudah ada</span><span class="tc-right"><span class="tc-hasil">Berhasil dibuat</span><span class="pill pill-pk">Sesuai</span><span class="tc-toggle">cURL</span></span></summary>
+          <div class="tc-body">
+            <pre class="curl">curl -X POST "{{base_url}}/api/v1/msp-companies/" \
+  -H "Authorization: Bearer {{token}}" \
+  -H "Content-Type: application/json" \
+  -d '{"code":"MSP-DEMO-02","name":"Demo Sub Dealer","parent_id":"{{company_id}}"}'</pre>
+            <div class="tc-expected">Respons yang diharapkan: <code>201 Created</code></div>
+          </div>
+        </details>
+
+        <details class="test-case">
+          <summary><span class="tc-kondisi">Mencoba membuat sub-dealer di bawah sub-dealer lain (struktur 3 tingkat)</span><span class="tc-right"><span class="tc-hasil">Ditolak sistem</span><span class="pill pill-pk">Sesuai</span><span class="tc-toggle">cURL</span></span></summary>
+          <div class="tc-body">
+            <pre class="curl">curl -X POST "{{base_url}}/api/v1/msp-companies/" \
+  -H "Authorization: Bearer {{token}}" \
+  -H "Content-Type: application/json" \
+  -d '{"code":"MSP-DEMO-03","name":"Demo Level 3","parent_id":"{{subdealer_id}}"}'</pre>
+            <div class="tc-expected">Respons yang diharapkan: <code>400 Bad Request</code> — "sub-dealer msp company cannot have its own sub-dealer"</div>
+          </div>
+        </details>
+
+        <details class="test-case">
+          <summary><span class="tc-kondisi">Membuat perusahaan dengan kode yang sudah dipakai perusahaan lain</span><span class="tc-right"><span class="tc-hasil">Ditolak, kode harus unik</span><span class="pill pill-pk">Sesuai</span><span class="tc-toggle">cURL</span></span></summary>
+          <div class="tc-body">
+            <pre class="curl">curl -X POST "{{base_url}}/api/v1/msp-companies/" \
+  -H "Authorization: Bearer {{token}}" \
+  -H "Content-Type: application/json" \
+  -d '{"code":"MSP-DEMO-01","name":"Demo Duplikat"}'</pre>
+            <div class="tc-expected">Respons yang diharapkan: <code>409 Conflict</code></div>
+          </div>
+        </details>
+
+        <details class="test-case">
+          <summary><span class="tc-kondisi">Mengirim beberapa permintaan Create dengan kode yang sama persis secara bersamaan</span><span class="tc-right"><span class="tc-hasil">Cuma 1 berhasil, sisanya ditolak</span><span class="pill pill-pk">Sesuai</span><span class="tc-toggle">cURL</span></span></summary>
+          <div class="tc-body">
+            <pre class="curl">for i in 1 2 3; do
+  curl -s -o /dev/null -w "req$i: %{http_code}\n" -X POST "{{base_url}}/api/v1/msp-companies/" \
+    -H "Authorization: Bearer {{token}}" \
+    -H "Content-Type: application/json" \
+    -d '{"code":"MSP-DEMO-07","name":"Demo Bersamaan"}' &
+done
+wait</pre>
+            <p class="tc-note">Skrip di atas mengirim 3 permintaan betul-betul bersamaan (bukan berurutan) — ini menguji kondisi balapan (race condition), bukan sekadar duplikat yang dikirim satu-satu.</p>
+            <div class="tc-expected">Respons yang diharapkan: tepat satu permintaan <code>201 Created</code>, sisanya <code>409 Conflict</code> — tidak ada yang <code>500</code></div>
+          </div>
+        </details>
+
+        <details class="test-case">
+          <summary><span class="tc-kondisi">Memindahkan sub-dealer dari satu perusahaan induk ke perusahaan induk lain</span><span class="tc-right"><span class="tc-hasil">Berhasil, data turunan ter-update</span><span class="pill pill-pk">Sesuai</span><span class="tc-toggle">cURL</span></span></summary>
+          <div class="tc-body">
+            <pre class="curl">curl -X PUT "{{base_url}}/api/v1/msp-companies/{{subdealer_id}}" \
+  -H "Authorization: Bearer {{token}}" \
+  -H "Content-Type: application/json" \
+  -d '{"code":"MSP-DEMO-02","name":"Demo Sub Dealer","parent_id":"{{company_id_2}}","msp_status":1}'</pre>
+            <div class="tc-expected">Respons yang diharapkan: <code>200 OK</code> — cek lewat GetByID bahwa jalur hierarkinya (<code class="inline">msp_tree</code>) sudah ikut berubah</div>
+          </div>
+        </details>
+
+        <details class="test-case">
+          <summary><span class="tc-kondisi">Mencoba menjadikan perusahaan yang sudah punya sub-dealer sebagai sub-dealer dari perusahaan lain</span><span class="tc-right"><span class="tc-hasil">Ditolak sistem</span><span class="pill pill-pk">Sesuai</span><span class="tc-toggle">cURL</span></span></summary>
+          <div class="tc-body">
+            <pre class="curl">curl -X PUT "{{base_url}}/api/v1/msp-companies/{{company_id_2}}" \
+  -H "Authorization: Bearer {{token}}" \
+  -H "Content-Type: application/json" \
+  -d '{"code":"MSP-DEMO-04","name":"Demo Company 2","parent_id":"{{company_id}}","msp_status":1}'</pre>
+            <p class="tc-note">Prasyarat: <code class="inline">company_id_2</code> sudah punya minimal satu sub-dealer sebelum test ini dijalankan.</p>
+            <div class="tc-expected">Respons yang diharapkan: <code>400 Bad Request</code></div>
+          </div>
+        </details>
+
+        <details class="test-case">
+          <summary><span class="tc-kondisi">Mencoba menjadikan perusahaan sebagai induk dari dirinya sendiri</span><span class="tc-right"><span class="tc-hasil">Ditolak sistem</span><span class="pill pill-pk">Sesuai</span><span class="tc-toggle">cURL</span></span></summary>
+          <div class="tc-body">
+            <pre class="curl">curl -X PUT "{{base_url}}/api/v1/msp-companies/{{company_id}}" \
+  -H "Authorization: Bearer {{token}}" \
+  -H "Content-Type: application/json" \
+  -d '{"code":"MSP-DEMO-01","name":"Demo Company 1","parent_id":"{{company_id}}","msp_status":1}'</pre>
+            <div class="tc-expected">Respons yang diharapkan: <code>400 Bad Request</code> — "msp company cannot be its own parent"</div>
+          </div>
+        </details>
+
+        <details class="test-case">
+          <summary><span class="tc-kondisi">Mencoba membuat struktur melingkar (perusahaan jadi induk dari keturunannya sendiri)</span><span class="tc-right"><span class="tc-hasil">Ditolak sistem</span><span class="pill pill-pk">Sesuai</span><span class="tc-toggle">cURL</span></span></summary>
+          <div class="tc-body">
+            <pre class="curl">curl -X PUT "{{base_url}}/api/v1/msp-companies/{{company_id_2}}" \
+  -H "Authorization: Bearer {{token}}" \
+  -H "Content-Type: application/json" \
+  -d '{"code":"MSP-DEMO-04","name":"Demo Company 2","parent_id":"{{subdealer_id}}","msp_status":1}'</pre>
+            <p class="tc-note">Prasyarat: <code class="inline">subdealer_id</code> saat ini berada di bawah <code class="inline">company_id_2</code> (jadi ini percobaan menjadikan induk sebagai anak dari anaknya sendiri).</p>
+            <div class="tc-expected">Respons yang diharapkan: <code>400 Bad Request</code> — "cannot set parent to a descendant of itself"</div>
+          </div>
+        </details>
+
+        <details class="test-case">
+          <summary><span class="tc-kondisi">Mengubah nama sebuah sub-dealer tanpa menyertakan ID perusahaan induknya</span><span class="tc-right"><span class="tc-hasil">Tetap jadi sub-dealer</span><span class="pill pill-pk">Sesuai</span><span class="tc-toggle">cURL</span></span></summary>
+          <div class="tc-body">
+            <pre class="curl">curl -X PUT "{{base_url}}/api/v1/msp-companies/{{subdealer_id}}" \
+  -H "Authorization: Bearer {{token}}" \
+  -H "Content-Type: application/json" \
+  -d '{"code":"MSP-DEMO-02","name":"Nama Baru","msp_status":1}'</pre>
+            <p class="tc-note">Perhatikan <code class="inline">parent_id</code> sengaja TIDAK disertakan di body ini.</p>
+            <div class="tc-expected">Respons yang diharapkan: <code>200 OK</code>, dan posisi sub-dealer ini di hierarki (induknya) tetap sama seperti sebelumnya — tidak ikut terlepas</div>
+          </div>
+        </details>
+
+        <details class="test-case">
+          <summary><span class="tc-kondisi">Melepas sub-dealer dari induknya secara sengaja, jadi perusahaan mandiri lagi</span><span class="tc-right"><span class="tc-hasil">Berhasil dilepas</span><span class="pill pill-pk">Sesuai</span><span class="tc-toggle">cURL</span></span></summary>
+          <div class="tc-body">
+            <pre class="curl">curl -X PUT "{{base_url}}/api/v1/msp-companies/{{subdealer_id}}" \
+  -H "Authorization: Bearer {{token}}" \
+  -H "Content-Type: application/json" \
+  -d '{"code":"MSP-DEMO-02","name":"Demo Sub Dealer","clear_parent":true,"msp_status":1}'</pre>
+            <p class="tc-note">Ini satu-satunya cara resmi untuk melepas sub-dealer dari induknya — mengirim <code class="inline">parent_id</code> kosong tidak dianggap sebagai permintaan melepas (lihat skenario sebelumnya), harus eksplisit lewat <code class="inline">clear_parent</code>.</p>
+            <div class="tc-expected">Respons yang diharapkan: <code>200 OK</code>, perusahaan ini sekarang jadi entitas mandiri (tanpa induk)</div>
+          </div>
+        </details>
+
+        <details class="test-case">
+          <summary><span class="tc-kondisi">Mengirim permintaan "lepas induk" dan "pindah induk" sekaligus dalam satu permintaan</span><span class="tc-right"><span class="tc-hasil">Ditolak, ambigu</span><span class="pill pill-pk">Sesuai</span><span class="tc-toggle">cURL</span></span></summary>
+          <div class="tc-body">
+            <pre class="curl">curl -X PUT "{{base_url}}/api/v1/msp-companies/{{subdealer_id}}" \
+  -H "Authorization: Bearer {{token}}" \
+  -H "Content-Type: application/json" \
+  -d '{"code":"MSP-DEMO-02","name":"Demo Sub Dealer","clear_parent":true,"parent_id":"{{company_id_2}}","msp_status":1}'</pre>
+            <div class="tc-expected">Respons yang diharapkan: <code>400 Bad Request</code> — "cannot set parent_id and clear_parent at the same time"</div>
+          </div>
+        </details>
+
+        <details class="test-case">
+          <summary><span class="tc-kondisi">Menghapus perusahaan bersamaan dengan pembuatan sub-dealer baru di bawahnya</span><span class="tc-right"><span class="tc-hasil">Cuma salah satu berhasil</span><span class="pill pill-pk">Sesuai</span><span class="tc-toggle">cURL</span></span></summary>
+          <div class="tc-body">
+            <pre class="curl">curl -s -o /dev/null -w "delete: %{http_code}\n" -X DELETE "{{base_url}}/api/v1/msp-companies/{{company_id}}" \
+  -H "Authorization: Bearer {{token}}" &
+
+curl -s -o /dev/null -w "create-child: %{http_code}\n" -X POST "{{base_url}}/api/v1/msp-companies/" \
+  -H "Authorization: Bearer {{token}}" \
+  -H "Content-Type: application/json" \
+  -d '{"code":"MSP-DEMO-08","name":"Demo Race Child","parent_id":"{{company_id}}"}' &
+
+wait</pre>
+            <p class="tc-note">Dua permintaan dikirim betul-betul bersamaan: satu menghapus perusahaan, satu lagi mencoba membuat sub-dealer baru di bawah perusahaan yang sama persis itu.</p>
+            <div class="tc-expected">Respons yang diharapkan: tepat satu yang berhasil (delete <code>200</code> + create <code>400</code>, ATAU create <code>201</code> + delete <code>409</code>) — tidak pernah dua-duanya sukses sekaligus, dan tidak ada sub-dealer yang tersisa menunjuk ke perusahaan yang sudah terhapus</div>
+          </div>
+        </details>
+
+        <details class="test-case">
+          <summary><span class="tc-kondisi">Menghapus perusahaan bersamaan dengan perusahaan lain yang di-reparent ke situ</span><span class="tc-right"><span class="tc-hasil">Cuma salah satu berhasil</span><span class="pill pill-pk">Sesuai</span><span class="tc-toggle">cURL</span></span></summary>
+          <div class="tc-body">
+            <pre class="curl">curl -s -o /dev/null -w "delete: %{http_code}\n" -X DELETE "{{base_url}}/api/v1/msp-companies/{{company_id}}" \
+  -H "Authorization: Bearer {{token}}" &
+
+curl -s -o /dev/null -w "reparent: %{http_code}\n" -X PUT "{{base_url}}/api/v1/msp-companies/{{company_id_2}}" \
+  -H "Authorization: Bearer {{token}}" \
+  -H "Content-Type: application/json" \
+  -d '{"code":"MSP-DEMO-04","name":"Demo Company 2","parent_id":"{{company_id}}","msp_status":1}' &
+
+wait</pre>
+            <p class="tc-note">Satu permintaan menghapus perusahaan, satu lagi bersamaan mencoba memindahkan perusahaan lain supaya induknya jadi perusahaan yang sama itu.</p>
+            <div class="tc-expected">Respons yang diharapkan: tepat satu yang berhasil, tidak ada perusahaan yang tersisa dengan induk yang sudah terhapus</div>
+          </div>
+        </details>
+
+        <details class="test-case">
+          <summary><span class="tc-kondisi">Melihat daftar status yang tersedia (Pending/Active/Suspended/Terminated)</span><span class="tc-right"><span class="tc-hasil">Data tampil lengkap</span><span class="pill pill-pk">Sesuai</span><span class="tc-toggle">cURL</span></span></summary>
+          <div class="tc-body">
+            <pre class="curl">curl -X GET "{{base_url}}/api/v1/msp-companies/statuses" \
+  -H "Authorization: Bearer {{token}}"</pre>
+            <div class="tc-expected">Respons yang diharapkan: <code>200 OK</code>, 4 status (PENDING, ACTIVE, SUSPENDED, TERMINATED)</div>
+          </div>
+        </details>
+
+        <details class="test-case">
+          <summary><span class="tc-kondisi">Membuat sub-dealer dengan ID perusahaan induk yang formatnya benar tapi datanya tidak ada</span><span class="tc-right"><span class="tc-hasil">Ditolak, induk tidak ditemukan</span><span class="pill pill-pk">Sesuai</span><span class="tc-toggle">cURL</span></span></summary>
+          <div class="tc-body">
+            <pre class="curl">curl -X POST "{{base_url}}/api/v1/msp-companies/" \
+  -H "Authorization: Bearer {{token}}" \
+  -H "Content-Type: application/json" \
+  -d '{"code":"MSP-DEMO-05","name":"Demo Sub 5","parent_id":"999999999999999999"}'</pre>
+            <div class="tc-expected">Respons yang diharapkan: <code>400 Bad Request</code> — "parent msp company not found"</div>
+          </div>
+        </details>
+      </div>
+
+      <h3>Operasi Dasar &amp; Validasi Input<span class="count">17 skenario</span></h3>
+      <p class="section-intro">Menguji fungsi dasar (lihat data, ubah, cari) dan memastikan sistem menolak input yang tidak lengkap/salah format, serta menolak akses dari pihak yang tidak berwenang.</p>
+
+      <div class="test-list">
+        <details class="test-case">
+          <summary><span class="tc-kondisi">Melihat daftar perusahaan yang terdaftar</span><span class="tc-right"><span class="tc-hasil">Data tampil normal</span><span class="pill pill-pk">Sesuai</span><span class="tc-toggle">cURL</span></span></summary>
+          <div class="tc-body">
+            <pre class="curl">curl -X GET "{{base_url}}/api/v1/msp-companies/" \
+  -H "Authorization: Bearer {{token}}"</pre>
+            <div class="tc-expected">Respons yang diharapkan: <code>200 OK</code></div>
+          </div>
+        </details>
+
+        <details class="test-case">
+          <summary><span class="tc-kondisi">Melihat detail satu perusahaan berdasarkan ID</span><span class="tc-right"><span class="tc-hasil">Data tampil normal</span><span class="pill pill-pk">Sesuai</span><span class="tc-toggle">cURL</span></span></summary>
+          <div class="tc-body">
+            <pre class="curl">curl -X GET "{{base_url}}/api/v1/msp-companies/{{company_id}}" \
+  -H "Authorization: Bearer {{token}}"</pre>
+            <div class="tc-expected">Respons yang diharapkan: <code>200 OK</code></div>
+          </div>
+        </details>
+
+        <details class="test-case">
+          <summary><span class="tc-kondisi">Melihat detail perusahaan induk yang punya sub-dealer</span><span class="tc-right"><span class="tc-hasil">Data sub-dealer ikut tampil</span><span class="pill pill-pk">Sesuai</span><span class="tc-toggle">cURL</span></span></summary>
+          <div class="tc-body">
+            <pre class="curl">curl -X GET "{{base_url}}/api/v1/msp-companies/{{company_id}}" \
+  -H "Authorization: Bearer {{token}}"</pre>
+            <p class="tc-note">Prasyarat: <code class="inline">company_id</code> di sini sudah punya minimal satu sub-dealer.</p>
+            <div class="tc-expected">Respons yang diharapkan: <code>200 OK</code>, field <code class="inline">child</code> berisi data lengkap sub-dealernya</div>
+          </div>
+        </details>
+
+        <details class="test-case">
+          <summary><span class="tc-kondisi">Mengubah nama perusahaan tanpa mengganti kodenya</span><span class="tc-right"><span class="tc-hasil">Berhasil diubah</span><span class="pill pill-pk">Sesuai</span><span class="tc-toggle">cURL</span></span></summary>
+          <div class="tc-body">
+            <pre class="curl">curl -X PUT "{{base_url}}/api/v1/msp-companies/{{company_id}}" \
+  -H "Authorization: Bearer {{token}}" \
+  -H "Content-Type: application/json" \
+  -d '{"code":"MSP-DEMO-01","name":"Nama Baru","msp_status":1}'</pre>
+            <p class="tc-note">Memastikan kode milik perusahaan itu sendiri tidak salah dianggap "sudah dipakai perusahaan lain".</p>
+            <div class="tc-expected">Respons yang diharapkan: <code>200 OK</code></div>
+          </div>
+        </details>
+
+        <details class="test-case">
+          <summary><span class="tc-kondisi">Mencari perusahaan dengan ID yang tidak terdaftar</span><span class="tc-right"><span class="tc-hasil">Data tidak ditemukan</span><span class="pill pill-pk">Sesuai</span><span class="tc-toggle">cURL</span></span></summary>
+          <div class="tc-body">
+            <pre class="curl">curl -X GET "{{base_url}}/api/v1/msp-companies/999999999999999999" \
+  -H "Authorization: Bearer {{token}}"</pre>
+            <div class="tc-expected">Respons yang diharapkan: <code>404 Not Found</code></div>
+          </div>
+        </details>
+
+        <details class="test-case">
+          <summary><span class="tc-kondisi">Membuat perusahaan tanpa mengisi kode (field wajib)</span><span class="tc-right"><span class="tc-hasil">Ditolak, diminta lengkapi data</span><span class="pill pill-pk">Sesuai</span><span class="tc-toggle">cURL</span></span></summary>
+          <div class="tc-body">
+            <pre class="curl">curl -X POST "{{base_url}}/api/v1/msp-companies/" \
+  -H "Authorization: Bearer {{token}}" \
+  -H "Content-Type: application/json" \
+  -d '{"name":"Tanpa Kode"}'</pre>
+            <div class="tc-expected">Respons yang diharapkan: <code>422 Unprocessable Entity</code></div>
+          </div>
+        </details>
+
+        <details class="test-case">
+          <summary><span class="tc-kondisi">Mengubah status perusahaan ke nilai yang tidak dikenal sistem</span><span class="tc-right"><span class="tc-hasil">Ditolak, status harus valid</span><span class="pill pill-pk">Sesuai</span><span class="tc-toggle">cURL</span></span></summary>
+          <div class="tc-body">
+            <pre class="curl">curl -X PUT "{{base_url}}/api/v1/msp-companies/{{company_id}}" \
+  -H "Authorization: Bearer {{token}}" \
+  -H "Content-Type: application/json" \
+  -d '{"code":"MSP-DEMO-01","name":"Demo Company 1","msp_status":5}'</pre>
+            <div class="tc-expected">Respons yang diharapkan: <code>422 Unprocessable Entity</code> — status harus 1-4</div>
+          </div>
+        </details>
+
+        <details class="test-case">
+          <summary><span class="tc-kondisi">Mengakses data tanpa login sama sekali</span><span class="tc-right"><span class="tc-hasil">Ditolak, wajib login</span><span class="pill pill-pk">Sesuai</span><span class="tc-toggle">cURL</span></span></summary>
+          <div class="tc-body">
+            <pre class="curl">curl -X GET "{{base_url}}/api/v1/msp-companies/"</pre>
+            <div class="tc-expected">Respons yang diharapkan: <code>401 Unauthorized</code></div>
+          </div>
+        </details>
+
+        <details class="test-case">
+          <summary><span class="tc-kondisi">Mengubah data perusahaan yang tidak ada</span><span class="tc-right"><span class="tc-hasil">Data tidak ditemukan</span><span class="pill pill-pk">Sesuai</span><span class="tc-toggle">cURL</span></span></summary>
+          <div class="tc-body">
+            <pre class="curl">curl -X PUT "{{base_url}}/api/v1/msp-companies/999999999999999999" \
+  -H "Authorization: Bearer {{token}}" \
+  -H "Content-Type: application/json" \
+  -d '{"code":"X","name":"X","msp_status":1}'</pre>
+            <div class="tc-expected">Respons yang diharapkan: <code>404 Not Found</code></div>
+          </div>
+        </details>
+
+        <details class="test-case">
+          <summary><span class="tc-kondisi">User sudah login tapi akunnya tidak diberi izin akses ke menu ini</span><span class="tc-right"><span class="tc-hasil">Ditolak, sesuai hak akses</span><span class="pill pill-pk">Sesuai</span><span class="tc-toggle">cURL</span></span></summary>
+          <div class="tc-body">
+            <pre class="curl">curl -X GET "{{base_url}}/api/v1/msp-companies/" \
+  -H "Authorization: Bearer {{token_no_access}}"</pre>
+            <div class="tc-expected">Respons yang diharapkan: <code>403 Forbidden</code></div>
+          </div>
+        </details>
+
+        <details class="test-case">
+          <summary><span class="tc-kondisi">Menghapus perusahaan yang tidak lagi diperlukan (data bersih, tanpa sub-dealer/user aktif)</span><span class="tc-right"><span class="tc-hasil">Berhasil dihapus</span><span class="pill pill-pk">Sesuai</span><span class="tc-toggle">cURL</span></span></summary>
+          <div class="tc-body">
+            <pre class="curl">curl -X DELETE "{{base_url}}/api/v1/msp-companies/{{company_id}}" \
+  -H "Authorization: Bearer {{token}}"</pre>
+            <p class="tc-note">Prasyarat: <code class="inline">company_id</code> di sini tidak punya sub-dealer maupun user MSP yang masih tertaut.</p>
+            <div class="tc-expected">Respons yang diharapkan: <code>200 OK</code></div>
+          </div>
+        </details>
+
+        <details class="test-case">
+          <summary><span class="tc-kondisi">Mengubah kode sebuah perusahaan menjadi kode yang sudah dipakai perusahaan lain</span><span class="tc-right"><span class="tc-hasil">Ditolak, kode harus unik</span><span class="pill pill-pk">Sesuai</span><span class="tc-toggle">cURL</span></span></summary>
+          <div class="tc-body">
+            <pre class="curl">curl -X PUT "{{base_url}}/api/v1/msp-companies/{{company_id_2}}" \
+  -H "Authorization: Bearer {{token}}" \
+  -H "Content-Type: application/json" \
+  -d '{"code":"MSP-DEMO-01","name":"Demo Company 2","msp_status":1}'</pre>
+            <p class="tc-note">Perhatikan <code class="inline">code</code> sengaja dibuat sama dengan kode milik <code class="inline">company_id</code> (bukan <code class="inline">company_id_2</code> sendiri).</p>
+            <div class="tc-expected">Respons yang diharapkan: <code>409 Conflict</code></div>
+          </div>
+        </details>
+
+        <details class="test-case">
+          <summary><span class="tc-kondisi">Melihat daftar perusahaan dengan parameter halaman di luar batas wajar (0)</span><span class="tc-right"><span class="tc-hasil">Otomatis pakai halaman default</span><span class="pill pill-pk">Sesuai</span><span class="tc-toggle">cURL</span></span></summary>
+          <div class="tc-body">
+            <pre class="curl">curl -X GET "{{base_url}}/api/v1/msp-companies/?page=0" \
+  -H "Authorization: Bearer {{token}}"</pre>
+            <div class="tc-expected">Respons yang diharapkan: <code>200 OK</code>, sistem otomatis memakai halaman 1 (tidak error)</div>
+          </div>
+        </details>
+
+        <details class="test-case">
+          <summary><span class="tc-kondisi">Mencoba mengatur status awal perusahaan langsung lewat pendaftaran</span><span class="tc-right"><span class="tc-hasil">Diabaikan, tetap Pending</span><span class="pill pill-pk">Sesuai</span><span class="tc-toggle">cURL</span></span></summary>
+          <div class="tc-body">
+            <pre class="curl">curl -X POST "{{base_url}}/api/v1/msp-companies/" \
+  -H "Authorization: Bearer {{token}}" \
+  -H "Content-Type: application/json" \
+  -d '{"code":"MSP-DEMO-06","name":"Demo Company 6","msp_status":2}'</pre>
+            <p class="tc-note">Perhatikan <code class="inline">msp_status:2</code> (Active) sengaja dikirim di body pendaftaran, padahal field ini seharusnya cuma bisa diubah lewat proses update terpisah.</p>
+            <div class="tc-expected">Respons yang diharapkan: <code>201 Created</code>, tapi status perusahaan yang tersimpan tetap Pending (bukan Active)</div>
+          </div>
+        </details>
+
+        <details class="test-case">
+          <summary><span class="tc-kondisi">Kode perusahaan melebihi batas maksimal panjang</span><span class="tc-right"><span class="tc-hasil">Ditolak</span><span class="pill pill-pk">Sesuai</span><span class="tc-toggle">cURL</span></span></summary>
+          <div class="tc-body">
+            <pre class="curl">curl -X POST "{{base_url}}/api/v1/msp-companies/" \
+  -H "Authorization: Bearer {{token}}" \
+  -H "Content-Type: application/json" \
+  -d '{"code":"XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX","name":"Kode Kepanjangan"}'</pre>
+            <p class="tc-note">Kode di atas sengaja dibuat 150 karakter (batas sistem 100 karakter).</p>
+            <div class="tc-expected">Respons yang diharapkan: <code>422 Unprocessable Entity</code></div>
+          </div>
+        </details>
+
+        <details class="test-case">
+          <summary><span class="tc-kondisi">Menghapus perusahaan yang sama dua kali berturut-turut</span><span class="tc-right"><span class="tc-hasil">Kedua kalinya tidak ditemukan</span><span class="pill pill-pk">Sesuai</span><span class="tc-toggle">cURL</span></span></summary>
+          <div class="tc-body">
+            <pre class="curl"># 1) Hapus perusahaan
+curl -X DELETE "{{base_url}}/api/v1/msp-companies/{{company_id}}" \
+  -H "Authorization: Bearer {{token}}"
+
+# 2) Coba hapus lagi perusahaan yang sama
+curl -X DELETE "{{base_url}}/api/v1/msp-companies/{{company_id}}" \
+  -H "Authorization: Bearer {{token}}"</pre>
+            <div class="tc-expected">Respons langkah 2 yang diharapkan: <code>404 Not Found</code> (bukan error tak terduga)</div>
+          </div>
+        </details>
+      </div>
+
+      <h3>Perlindungan Data Saat Penghapusan<span class="count">2 skenario</span></h3>
+      <p class="section-intro">Menguji apakah sistem melindungi data dari penghapusan yang bisa merusak relasi — perusahaan yang masih punya sub-dealer atau user aktif tidak boleh langsung dihapus begitu saja.</p>
+
+      <div class="test-list">
+        <details class="test-case">
+          <summary><span class="tc-kondisi">Menghapus perusahaan yang masih punya sub-dealer sekaligus masih punya user aktif tertaut</span><span class="tc-right"><span class="tc-hasil">Ditolak</span><span class="pill pill-pk">Sesuai</span><span class="tc-toggle">cURL</span></span></summary>
+          <div class="tc-body">
+            <pre class="curl">curl -X DELETE "{{base_url}}/api/v1/msp-companies/{{company_id_2}}" \
+  -H "Authorization: Bearer {{token}}"</pre>
+            <p class="tc-note">Prasyarat: <code class="inline">company_id_2</code> masih punya minimal satu sub-dealer DAN minimal satu user MSP yang tertaut.</p>
+            <div class="tc-expected">Respons yang diharapkan: <code>409 Conflict</code> — "cannot delete msp company that has sub-dealers" (pengecekan sub-dealer diprioritaskan lebih dulu)</div>
+          </div>
+        </details>
+
+        <details class="test-case">
+          <summary><span class="tc-kondisi">Setelah sub-dealer diselesaikan, tapi masih ada user aktif tertaut ke perusahaan itu</span><span class="tc-right"><span class="tc-hasil">Tetap ditolak</span><span class="pill pill-pk">Sesuai</span><span class="tc-toggle">cURL</span></span></summary>
+          <div class="tc-body">
+            <pre class="curl"># 1) Hapus dulu sub-dealernya
+curl -X DELETE "{{base_url}}/api/v1/msp-companies/{{subdealer_id}}" \
+  -H "Authorization: Bearer {{token}}"
+
+# 2) Coba hapus company_id_2 lagi (user MSP masih tertaut)
+curl -X DELETE "{{base_url}}/api/v1/msp-companies/{{company_id_2}}" \
+  -H "Authorization: Bearer {{token}}"</pre>
+            <div class="tc-expected">Respons langkah 2 yang diharapkan: <code>409 Conflict</code> — "cannot delete msp company that still has linked users"</div>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <section id="user-msp">
+      <h2><span class="num">05</span> Hasil Detail — Manajemen User MSP</h2>
+
+      <h3>Pendaftaran &amp; Keterkaitan ke Perusahaan<span class="count">9 skenario</span></h3>
+      <p class="section-intro">User MSP bisa didaftarkan dengan kombinasi data yang fleksibel — kadang langsung dikaitkan ke perusahaan dan kategori (Agent/Technician), kadang belum. Bagian ini menguji fleksibilitas itu, plus memastikan data milik seorang user tidak hilang saat datanya sekadar diedit sebagian.</p>
+
+      <div class="test-list">
+        <details class="test-case">
+          <summary><span class="tc-kondisi">Mendaftarkan user dengan kategori (Agent/Technician) saja, belum dikaitkan ke perusahaan manapun</span><span class="tc-right"><span class="tc-hasil">Berhasil didaftarkan</span><span class="pill pill-pk">Sesuai</span><span class="tc-toggle">cURL</span></span></summary>
+          <div class="tc-body">
+            <pre class="curl">curl -X POST "{{base_url}}/api/v1/users/msp/" \
+  -H "Authorization: Bearer {{token}}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "agent_id": "AGT-DEMO-01",
+    "email": "demo01@example.com",
+    "first_name": "Demo",
+    "last_name": "User1",
+    "mobile_number": "+6281200000001",
+    "entity_codes": "ENT-001",
+    "division_codes": "DIV_IT",
+    "category_id": "{{category_id}}"
+  }'</pre>
+            <div class="tc-expected">Respons yang diharapkan: <code>201 Created</code>, tanpa <code class="inline">msp_company_id</code> di data</div>
+          </div>
+        </details>
+
+        <details class="test-case">
+          <summary><span class="tc-kondisi">Mendaftarkan user dan langsung dikaitkan ke perusahaan, kategori menyusul belakangan</span><span class="tc-right"><span class="tc-hasil">Berhasil didaftarkan</span><span class="pill pill-pk">Sesuai</span><span class="tc-toggle">cURL</span></span></summary>
+          <div class="tc-body">
+            <pre class="curl">curl -X POST "{{base_url}}/api/v1/users/msp/" \
+  -H "Authorization: Bearer {{token}}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "agent_id": "AGT-DEMO-02",
+    "email": "demo02@example.com",
+    "first_name": "Demo",
+    "last_name": "User2",
+    "mobile_number": "+6281200000002",
+    "entity_codes": "ENT-001",
+    "division_codes": "DIV_IT",
+    "msp_company_id": "{{company_id}}"
+  }'</pre>
+            <div class="tc-expected">Respons yang diharapkan: <code>201 Created</code>, tanpa <code class="inline">category_id</code> di data</div>
+          </div>
+        </details>
+
+        <details class="test-case">
+          <summary><span class="tc-kondisi">Mendaftarkan user dengan ID unik yang ternyata sudah dipakai user lain</span><span class="tc-right"><span class="tc-hasil">Ditolak, ID harus unik</span><span class="pill pill-pk">Sesuai</span><span class="tc-toggle">cURL</span></span></summary>
+          <div class="tc-body">
+            <pre class="curl">curl -X POST "{{base_url}}/api/v1/users/msp/" \
+  -H "Authorization: Bearer {{token}}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "agent_id": "AGT-DEMO-01",
+    "email": "demo03@example.com",
+    "first_name": "Demo",
+    "last_name": "User3",
+    "mobile_number": "+6281200000003",
+    "entity_codes": "ENT-001",
+    "division_codes": "DIV_IT"
+  }'</pre>
+            <p class="tc-note">Perhatikan <code class="inline">agent_id</code> sengaja dibuat sama dengan skenario pertama di atas.</p>
+            <div class="tc-expected">Respons yang diharapkan: <code>409 Conflict</code> — "agent id already used"</div>
+          </div>
+        </details>
+
+        <details class="test-case">
+          <summary><span class="tc-kondisi">Mengirim beberapa pendaftaran dengan agent_id yang sama persis secara bersamaan</span><span class="tc-right"><span class="tc-hasil">Cuma 1 berhasil, sisanya ditolak</span><span class="pill pill-pk">Sesuai</span><span class="tc-toggle">cURL</span></span></summary>
+          <div class="tc-body">
+            <pre class="curl">for i in 1 2 3; do
+  curl -s -o /dev/null -w "req$i: %{http_code}\n" -X POST "{{base_url}}/api/v1/users/msp/" \
+    -H "Authorization: Bearer {{token}}" \
+    -H "Content-Type: application/json" \
+    -d "{\"agent_id\":\"AGT-DEMO-13\",\"email\":\"demo13-$i@example.com\",\"first_name\":\"Demo\",\"last_name\":\"User13\",\"mobile_number\":\"+62812000001$i\",\"entity_codes\":\"E\",\"division_codes\":\"D\"}" &
+done
+wait</pre>
+            <p class="tc-note">Skrip di atas mengirim 3 permintaan betul-betul bersamaan (bukan berurutan) — ini menguji kondisi balapan (race condition) di jalur pendaftaran, bukan sekadar duplikat yang dikirim satu-satu.</p>
+            <div class="tc-expected">Respons yang diharapkan: tepat satu permintaan <code>201 Created</code>, sisanya <code>409 Conflict</code> — tidak ada yang <code>500</code></div>
+          </div>
+        </details>
+
+        <details class="test-case">
+          <summary><span class="tc-kondisi">Menghapus perusahaan bersamaan dengan pendaftaran user MSP baru yang dikaitkan ke situ</span><span class="tc-right"><span class="tc-hasil">Cuma salah satu berhasil</span><span class="pill pill-pk">Sesuai</span><span class="tc-toggle">cURL</span></span></summary>
+          <div class="tc-body">
+            <pre class="curl">curl -s -o /dev/null -w "delete: %{http_code}\n" -X DELETE "{{base_url}}/api/v1/msp-companies/{{company_id}}" \
+  -H "Authorization: Bearer {{token}}" &
+
+curl -s -o /dev/null -w "create-user: %{http_code}\n" -X POST "{{base_url}}/api/v1/users/msp/" \
+  -H "Authorization: Bearer {{token}}" \
+  -H "Content-Type: application/json" \
+  -d '{"agent_id":"AGT-DEMO-14","email":"demo14@example.com","first_name":"Demo","last_name":"User14","mobile_number":"+6281200000014","entity_codes":"E","division_codes":"D","msp_company_id":"{{company_id}}"}' &
+
+wait</pre>
+            <p class="tc-note">Satu permintaan menghapus perusahaan, satu lagi bersamaan mendaftarkan user MSP baru yang langsung dikaitkan ke perusahaan yang sama itu.</p>
+            <div class="tc-expected">Respons yang diharapkan: tepat satu yang berhasil, tidak ada user yang tersisa terkait ke perusahaan yang sudah terhapus</div>
+          </div>
+        </details>
+
+        <details class="test-case">
+          <summary><span class="tc-kondisi">Menghapus perusahaan bersamaan dengan user existing yang di-update supaya terkait ke situ</span><span class="tc-right"><span class="tc-hasil">Cuma salah satu berhasil</span><span class="pill pill-pk">Sesuai</span><span class="tc-toggle">cURL</span></span></summary>
+          <div class="tc-body">
+            <pre class="curl">curl -s -o /dev/null -w "delete: %{http_code}\n" -X DELETE "{{base_url}}/api/v1/msp-companies/{{company_id}}" \
+  -H "Authorization: Bearer {{token}}" &
+
+curl -s -o /dev/null -w "update-link: %{http_code}\n" -X PUT "{{base_url}}/api/v1/users/msp/{{msp_user_id}}" \
+  -H "Authorization: Bearer {{token}}" \
+  -H "Content-Type: application/json" \
+  -d '{"agent_id":"AGT-DEMO-02","first_name":"Demo","last_name":"User2","mobile_number":"+6281200000002","entity_codes":"E","division_codes":"D","msp_company_id":"{{company_id}}"}' &
+
+wait</pre>
+            <p class="tc-note">Satu permintaan menghapus perusahaan, satu lagi bersamaan mengubah data user yang sudah ada supaya terkait ke perusahaan yang sama itu.</p>
+            <div class="tc-expected">Respons yang diharapkan: tepat satu yang berhasil, tidak ada user yang tersisa terkait ke perusahaan yang sudah terhapus</div>
+          </div>
+        </details>
+
+        <details class="test-case">
+          <summary><span class="tc-kondisi">Mengedit hanya nama belakang user yang sudah terkait ke sebuah perusahaan</span><span class="tc-right"><span class="tc-hasil">Keterkaitan tetap utuh</span><span class="pill pill-pk">Sesuai</span><span class="tc-toggle">cURL</span></span></summary>
+          <div class="tc-body">
+            <pre class="curl">curl -X PUT "{{base_url}}/api/v1/users/msp/{{msp_user_id}}" \
+  -H "Authorization: Bearer {{token}}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "agent_id": "AGT-DEMO-02",
+    "first_name": "Demo",
+    "last_name": "User2-Updated",
+    "mobile_number": "+6281200000002",
+    "entity_codes": "ENT-001",
+    "division_codes": "DIV_IT"
+  }'</pre>
+            <p class="tc-note">Perhatikan: field <code class="inline">msp_company_id</code> sengaja TIDAK disertakan di body ini.</p>
+            <div class="tc-expected">Respons yang diharapkan: <code>200 OK</code>, dan field <code class="inline">msp_company_id</code> tetap muncul di data (tidak hilang)</div>
+          </div>
+        </details>
+
+        <details class="test-case">
+          <summary><span class="tc-kondisi">Mengedit hanya nama belakang user yang sudah punya kategori (Agent/Technician)</span><span class="tc-right"><span class="tc-hasil">Kategori tetap utuh</span><span class="pill pill-pk">Sesuai</span><span class="tc-toggle">cURL</span></span></summary>
+          <div class="tc-body">
+            <pre class="curl">curl -X PUT "{{base_url}}/api/v1/users/msp/{{msp_user_id}}" \
+  -H "Authorization: Bearer {{token}}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "agent_id": "AGT-DEMO-01",
+    "first_name": "Demo",
+    "last_name": "User1-Updated",
+    "mobile_number": "+6281200000001",
+    "entity_codes": "ENT-001",
+    "division_codes": "DIV_IT"
+  }'</pre>
+            <p class="tc-note">Perhatikan: field <code class="inline">category_id</code> sengaja TIDAK disertakan di body ini.</p>
+            <div class="tc-expected">Respons yang diharapkan: <code>200 OK</code>, dan field <code class="inline">category_id</code>/<code class="inline">category_name</code> tetap muncul di data</div>
+          </div>
+        </details>
+
+        <details class="test-case">
+          <summary><span class="tc-kondisi">Mendaftarkan user MSP baru dengan ID unik yang sebelumnya dipakai user lain yang sudah dihapus</span><span class="tc-right"><span class="tc-hasil">Berhasil didaftarkan</span><span class="pill pill-pk">Sesuai</span><span class="tc-toggle">cURL</span></span></summary>
+          <div class="tc-body">
+            <pre class="curl"># 1) Hapus user lama yang punya ID ini
+curl -X DELETE "{{base_url}}/api/v1/users/msp/{{msp_user_id}}" \
+  -H "Authorization: Bearer {{token}}"
+
+# 2) Daftarkan user baru dengan agent_id yang SAMA PERSIS
+curl -X POST "{{base_url}}/api/v1/users/msp/" \
+  -H "Authorization: Bearer {{token}}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "agent_id": "AGT-DEMO-02",
+    "email": "demo02-baru@example.com",
+    "first_name": "Demo",
+    "last_name": "Pengganti",
+    "mobile_number": "+6281200000099",
+    "entity_codes": "ENT-001",
+    "division_codes": "DIV_IT"
+  }'</pre>
+            <p class="tc-note">Menguji bahwa ID yang sudah tidak dipakai (karena pemiliknya dihapus) boleh dipakai ulang.</p>
+            <div class="tc-expected">Respons langkah 2 yang diharapkan: <code>201 Created</code> (tidak dianggap duplikat)</div>
+          </div>
+        </details>
+      </div>
+
+      <h3>Validasi Input &amp; Keamanan Akses<span class="count">18 skenario</span></h3>
+
+      <div class="test-list">
+        <details class="test-case">
+          <summary><span class="tc-kondisi">Mengubah data user yang tidak ada di sistem</span><span class="tc-right"><span class="tc-hasil">Data tidak ditemukan</span><span class="pill pill-pk">Sesuai</span><span class="tc-toggle">cURL</span></span></summary>
+          <div class="tc-body">
+            <pre class="curl">curl -X PUT "{{base_url}}/api/v1/users/msp/999999999999999999" \
+  -H "Authorization: Bearer {{token}}" \
+  -H "Content-Type: application/json" \
+  -d '{"agent_id":"X","first_name":"X","last_name":"X","mobile_number":"+6281200000000","entity_codes":"E","division_codes":"D"}'</pre>
+            <div class="tc-expected">Respons yang diharapkan: <code>404 Not Found</code></div>
+          </div>
+        </details>
+
+        <details class="test-case">
+          <summary><span class="tc-kondisi">Menghapus user yang tidak ada di sistem</span><span class="tc-right"><span class="tc-hasil">Data tidak ditemukan</span><span class="pill pill-pk">Sesuai</span><span class="tc-toggle">cURL</span></span></summary>
+          <div class="tc-body">
+            <pre class="curl">curl -X DELETE "{{base_url}}/api/v1/users/msp/999999999999999999" \
+  -H "Authorization: Bearer {{token}}"</pre>
+            <div class="tc-expected">Respons yang diharapkan: <code>404 Not Found</code></div>
+          </div>
+        </details>
+
+        <details class="test-case">
+          <summary><span class="tc-kondisi">Mengirim data kategori dengan format yang salah</span><span class="tc-right"><span class="tc-hasil">Ditolak, format tidak valid</span><span class="pill pill-pk">Sesuai</span><span class="tc-toggle">cURL</span></span></summary>
+          <div class="tc-body">
+            <pre class="curl">curl -X POST "{{base_url}}/api/v1/users/msp/" \
+  -H "Authorization: Bearer {{token}}" \
+  -H "Content-Type: application/json" \
+  -d '{"agent_id":"AGT-DEMO-05","email":"demo05@example.com","first_name":"Demo","last_name":"User5","mobile_number":"+6281200000005","entity_codes":"E","division_codes":"D","category_id":"abc"}'</pre>
+            <div class="tc-expected">Respons yang diharapkan: <code>400 Bad Request</code></div>
+          </div>
+        </details>
+
+        <details class="test-case">
+          <summary><span class="tc-kondisi">Mengirim data perusahaan dengan format yang salah</span><span class="tc-right"><span class="tc-hasil">Ditolak, format tidak valid</span><span class="pill pill-pk">Sesuai</span><span class="tc-toggle">cURL</span></span></summary>
+          <div class="tc-body">
+            <pre class="curl">curl -X POST "{{base_url}}/api/v1/users/msp/" \
+  -H "Authorization: Bearer {{token}}" \
+  -H "Content-Type: application/json" \
+  -d '{"agent_id":"AGT-DEMO-06","email":"demo06@example.com","first_name":"Demo","last_name":"User6","mobile_number":"+6281200000006","entity_codes":"E","division_codes":"D","msp_company_id":"abc"}'</pre>
+            <div class="tc-expected">Respons yang diharapkan: <code>400 Bad Request</code></div>
+          </div>
+        </details>
+
+        <details class="test-case">
+          <summary><span class="tc-kondisi">Mendaftarkan user tanpa mengisi ID (field wajib)</span><span class="tc-right"><span class="tc-hasil">Ditolak, diminta lengkapi data</span><span class="pill pill-pk">Sesuai</span><span class="tc-toggle">cURL</span></span></summary>
+          <div class="tc-body">
+            <pre class="curl">curl -X POST "{{base_url}}/api/v1/users/msp/" \
+  -H "Authorization: Bearer {{token}}" \
+  -H "Content-Type: application/json" \
+  -d '{"email":"demo07@example.com","first_name":"Demo","last_name":"User7","mobile_number":"+6281200000007","entity_codes":"E","division_codes":"D"}'</pre>
+            <div class="tc-expected">Respons yang diharapkan: <code>422 Unprocessable Entity</code></div>
+          </div>
+        </details>
+
+        <details class="test-case">
+          <summary><span class="tc-kondisi">Mendaftarkan user dengan email yang sudah dipakai user lain</span><span class="tc-right"><span class="tc-hasil">Ditolak, email harus unik</span><span class="pill pill-pk">Sesuai</span><span class="tc-toggle">cURL</span></span></summary>
+          <div class="tc-body">
+            <pre class="curl">curl -X POST "{{base_url}}/api/v1/users/msp/" \
+  -H "Authorization: Bearer {{token}}" \
+  -H "Content-Type: application/json" \
+  -d '{"agent_id":"AGT-DEMO-08","email":"demo01@example.com","first_name":"Demo","last_name":"User8","mobile_number":"+6281200000008","entity_codes":"E","division_codes":"D"}'</pre>
+            <p class="tc-note">Perhatikan <code class="inline">email</code> sengaja dibuat sama dengan skenario pendaftaran pertama di atas.</p>
+            <div class="tc-expected">Respons yang diharapkan: <code>409 Conflict</code></div>
+          </div>
+        </details>
+
+        <details class="test-case">
+          <summary><span class="tc-kondisi">Mencari user dengan ID yang tidak terdaftar</span><span class="tc-right"><span class="tc-hasil">Data tidak ditemukan</span><span class="pill pill-pk">Sesuai</span><span class="tc-toggle">cURL</span></span></summary>
+          <div class="tc-body">
+            <pre class="curl">curl -X GET "{{base_url}}/api/v1/users/msp/999999999999999999" \
+  -H "Authorization: Bearer {{token}}"</pre>
+            <div class="tc-expected">Respons yang diharapkan: <code>404 Not Found</code></div>
+          </div>
+        </details>
+
+        <details class="test-case">
+          <summary><span class="tc-kondisi">Mengakses data tanpa login sama sekali</span><span class="tc-right"><span class="tc-hasil">Ditolak, wajib login</span><span class="pill pill-pk">Sesuai</span><span class="tc-toggle">cURL</span></span></summary>
+          <div class="tc-body">
+            <pre class="curl">curl -X GET "{{base_url}}/api/v1/users/msp/"</pre>
+            <div class="tc-expected">Respons yang diharapkan: <code>401 Unauthorized</code></div>
+          </div>
+        </details>
+
+        <details class="test-case">
+          <summary><span class="tc-kondisi">User sudah login tapi akunnya tidak diberi izin akses ke menu ini</span><span class="tc-right"><span class="tc-hasil">Ditolak, sesuai hak akses</span><span class="pill pill-pk">Sesuai</span><span class="tc-toggle">cURL</span></span></summary>
+          <div class="tc-body">
+            <pre class="curl">curl -X GET "{{base_url}}/api/v1/users/msp/" \
+  -H "Authorization: Bearer {{token_no_access}}"</pre>
+            <div class="tc-expected">Respons yang diharapkan: <code>403 Forbidden</code></div>
+          </div>
+        </details>
+
+        <details class="test-case">
+          <summary><span class="tc-kondisi">Menghapus user, lalu mengecek apakah datanya masih bisa diakses dari luar sistem</span><span class="tc-right"><span class="tc-hasil">Tidak bisa diakses lagi</span><span class="pill pill-pk">Sesuai</span><span class="tc-toggle">cURL</span></span></summary>
+          <div class="tc-body">
+            <pre class="curl"># 1) Hapus user-nya
+curl -X DELETE "{{base_url}}/api/v1/users/msp/{{msp_user_id}}" \
+  -H "Authorization: Bearer {{token}}"
+
+# 2) Coba akses lagi dari sisi aplikasi eksternal, pakai agent_id user yang baru dihapus
+curl -X POST "{{base_url}}/api/v1/users/me/?application_id={{application_id}}" \
+  -H "X-API-KEY: {{api_key}}" \
+  -H "Content-Type: application/json" \
+  -d '{"user_reference_id":"{{agent_id}}"}'</pre>
+            <div class="tc-expected">Respons langkah 2 yang diharapkan: <code>404 Not Found</code> — "reference_id not found"</div>
+          </div>
+        </details>
+
+        <details class="test-case">
+          <summary><span class="tc-kondisi">Menghapus user yang sama dua kali berturut-turut</span><span class="tc-right"><span class="tc-hasil">Kedua kalinya tidak ditemukan</span><span class="pill pill-pk">Sesuai</span><span class="tc-toggle">cURL</span></span></summary>
+          <div class="tc-body">
+            <pre class="curl"># 1) Hapus user
+curl -X DELETE "{{base_url}}/api/v1/users/msp/{{msp_user_id}}" \
+  -H "Authorization: Bearer {{token}}"
+
+# 2) Coba hapus lagi user yang sama
+curl -X DELETE "{{base_url}}/api/v1/users/msp/{{msp_user_id}}" \
+  -H "Authorization: Bearer {{token}}"</pre>
+            <div class="tc-expected">Respons langkah 2 yang diharapkan: <code>404 Not Found</code> (bukan error tak terduga)</div>
+          </div>
+        </details>
+
+        <details class="test-case">
+          <summary><span class="tc-kondisi">ID unik (agent_id) melebihi batas maksimal panjang</span><span class="tc-right"><span class="tc-hasil">Ditolak</span><span class="pill pill-pk">Sesuai</span><span class="tc-toggle">cURL</span></span></summary>
+          <div class="tc-body">
+            <pre class="curl">curl -X POST "{{base_url}}/api/v1/users/msp/" \
+  -H "Authorization: Bearer {{token}}" \
+  -H "Content-Type: application/json" \
+  -d '{"agent_id":"AGT-YANG-SANGAT-PANJANG-SEKALI-LEBIH-DARI-DUA-RATUS-LIMA-PULUH-LIMA-KARAKTER-...(dst hingga 300 karakter)","email":"panjang@example.com","first_name":"F","last_name":"L","mobile_number":"+6281300000099","entity_codes":"E","division_codes":"D"}'</pre>
+            <p class="tc-note">Batas sistem untuk <code class="inline">agent_id</code> adalah 255 karakter.</p>
+            <div class="tc-expected">Respons yang diharapkan: <code>422 Unprocessable Entity</code></div>
+          </div>
+        </details>
+
+        <details class="test-case">
+          <summary><span class="tc-kondisi">Nama depan atau belakang melebihi batas maksimal panjang</span><span class="tc-right"><span class="tc-hasil">Ditolak</span><span class="pill pill-pk">Sesuai</span><span class="tc-toggle">cURL</span></span></summary>
+          <div class="tc-body">
+            <pre class="curl">curl -X POST "{{base_url}}/api/v1/users/msp/" \
+  -H "Authorization: Bearer {{token}}" \
+  -H "Content-Type: application/json" \
+  -d '{"agent_id":"AGT-DEMO-11","email":"demo11@example.com","first_name":"NamaYangSangatSangatSangatPanjangSekaliLebihDariSeratusKarakter...(dst hingga 150 karakter)","last_name":"L","mobile_number":"+6281300000011","entity_codes":"E","division_codes":"D"}'</pre>
+            <p class="tc-note">Batas sistem untuk nama depan/belakang adalah 100 karakter masing-masing.</p>
+            <div class="tc-expected">Respons yang diharapkan: <code>422 Unprocessable Entity</code></div>
+          </div>
+        </details>
+
+        <details class="test-case">
+          <summary><span class="tc-kondisi">Alamat email melebihi batas maksimal panjang</span><span class="tc-right"><span class="tc-hasil">Ditolak</span><span class="pill pill-pk">Sesuai</span><span class="tc-toggle">cURL</span></span></summary>
+          <div class="tc-body">
+            <pre class="curl">curl -X POST "{{base_url}}/api/v1/users/msp/" \
+  -H "Authorization: Bearer {{token}}" \
+  -H "Content-Type: application/json" \
+  -d '{"agent_id":"AGT-DEMO-12","email":"alamat-email-yang-sangat-panjang-sekali-lebih-dari-seratus-karakter-total-termasuk-domainnya@example.com","first_name":"F","last_name":"L","mobile_number":"+6281300000012","entity_codes":"E","division_codes":"D"}'</pre>
+            <p class="tc-note">Batas sistem untuk email adalah 100 karakter.</p>
+            <div class="tc-expected">Respons yang diharapkan: <code>422 Unprocessable Entity</code></div>
+          </div>
+        </details>
+
+        <details class="test-case">
+          <summary><span class="tc-kondisi">Mendaftarkan user dengan ID kategori yang formatnya benar tapi datanya tidak ada di sistem</span><span class="tc-right"><span class="tc-hasil">Ditolak, kategori tidak ditemukan</span><span class="pill pill-pk">Sesuai</span><span class="tc-toggle">cURL</span></span></summary>
+          <div class="tc-body">
+            <pre class="curl">curl -X POST "{{base_url}}/api/v1/users/msp/" \
+  -H "Authorization: Bearer {{token}}" \
+  -H "Content-Type: application/json" \
+  -d '{"agent_id":"AGT-DEMO-09","email":"demo09@example.com","first_name":"Demo","last_name":"User9","mobile_number":"+6281200000009","entity_codes":"E","division_codes":"D","category_id":"999999"}'</pre>
+            <div class="tc-expected">Respons yang diharapkan: <code>400 Bad Request</code> — "msp user category not found"</div>
+          </div>
+        </details>
+
+        <details class="test-case">
+          <summary><span class="tc-kondisi">Mendaftarkan user dengan ID perusahaan yang formatnya benar tapi datanya tidak ada di sistem</span><span class="tc-right"><span class="tc-hasil">Ditolak, perusahaan tidak ditemukan</span><span class="pill pill-pk">Sesuai</span><span class="tc-toggle">cURL</span></span></summary>
+          <div class="tc-body">
+            <pre class="curl">curl -X POST "{{base_url}}/api/v1/users/msp/" \
+  -H "Authorization: Bearer {{token}}" \
+  -H "Content-Type: application/json" \
+  -d '{"agent_id":"AGT-DEMO-10","email":"demo10@example.com","first_name":"Demo","last_name":"User10","mobile_number":"+6281200000010","entity_codes":"E","division_codes":"D","msp_company_id":"999999999999999999"}'</pre>
+            <div class="tc-expected">Respons yang diharapkan: <code>400 Bad Request</code> — "msp company not found"</div>
+          </div>
+        </details>
+
+        <details class="test-case">
+          <summary><span class="tc-kondisi">Mengubah data user dengan ID perusahaan yang formatnya benar tapi datanya tidak ada di sistem</span><span class="tc-right"><span class="tc-hasil">Ditolak, perusahaan tidak ditemukan</span><span class="pill pill-pk">Sesuai</span><span class="tc-toggle">cURL</span></span></summary>
+          <div class="tc-body">
+            <pre class="curl">curl -X PUT "{{base_url}}/api/v1/users/msp/{{msp_user_id}}" \
+  -H "Authorization: Bearer {{token}}" \
+  -H "Content-Type: application/json" \
+  -d '{"agent_id":"AGT-DEMO-02","first_name":"Demo","last_name":"User2","mobile_number":"+6281200000002","entity_codes":"E","division_codes":"D","msp_company_id":"999999999999999999"}'</pre>
+            <div class="tc-expected">Respons yang diharapkan: <code>400 Bad Request</code> — "msp company not found"</div>
+          </div>
+        </details>
+
+        <details class="test-case">
+          <summary><span class="tc-kondisi">Menonaktifkan user dengan kode status yang tidak dikenal sistem</span><span class="tc-right"><span class="tc-hasil">Ditolak, status tidak valid</span><span class="pill pill-pk">Sesuai</span><span class="tc-toggle">cURL</span></span></summary>
+          <div class="tc-body">
+            <pre class="curl">curl -X PATCH "{{base_url}}/api/v1/users/msp/{{msp_user_id}}/revoke" \
+  -H "Authorization: Bearer {{token}}" \
+  -H "Content-Type: application/json" \
+  -d '{"status": 9}'</pre>
+            <div class="tc-expected">Respons yang diharapkan: <code>422 Unprocessable Entity</code></div>
+          </div>
+        </details>
+      </div>
+
+      <h3>Fungsi Sehari-hari<span class="count">5 skenario</span></h3>
+      <div class="test-list">
+        <details class="test-case">
+          <summary><span class="tc-kondisi">Melihat daftar kategori user MSP yang tersedia (Agent/Technician)</span><span class="tc-right"><span class="tc-hasil">Data tampil normal</span><span class="pill pill-pk">Sesuai</span><span class="tc-toggle">cURL</span></span></summary>
+          <div class="tc-body">
+            <pre class="curl">curl -X GET "{{base_url}}/api/v1/users/msp/categories" \
+  -H "Authorization: Bearer {{token}}"</pre>
+            <div class="tc-expected">Respons yang diharapkan: <code>200 OK</code></div>
+          </div>
+        </details>
+
+        <details class="test-case">
+          <summary><span class="tc-kondisi">Melihat detail satu user MSP</span><span class="tc-right"><span class="tc-hasil">Data tampil normal</span><span class="pill pill-pk">Sesuai</span><span class="tc-toggle">cURL</span></span></summary>
+          <div class="tc-body">
+            <pre class="curl">curl -X GET "{{base_url}}/api/v1/users/msp/{{msp_user_id}}" \
+  -H "Authorization: Bearer {{token}}"</pre>
+            <div class="tc-expected">Respons yang diharapkan: <code>200 OK</code></div>
+          </div>
+        </details>
+
+        <details class="test-case">
+          <summary><span class="tc-kondisi">Menonaktifkan sementara akun user (revoke)</span><span class="tc-right"><span class="tc-hasil">Berhasil, status berubah</span><span class="pill pill-pk">Sesuai</span><span class="tc-toggle">cURL</span></span></summary>
+          <div class="tc-body">
+            <pre class="curl">curl -X PATCH "{{base_url}}/api/v1/users/msp/{{msp_user_id}}/revoke" \
+  -H "Authorization: Bearer {{token}}" \
+  -H "Content-Type: application/json" \
+  -d '{"status": 2}'</pre>
+            <div class="tc-expected">Respons yang diharapkan: <code>200 OK</code></div>
+          </div>
+        </details>
+
+        <details class="test-case">
+          <summary><span class="tc-kondisi">Mencari user MSP berdasarkan nama yang sesuai</span><span class="tc-right"><span class="tc-hasil">Data yang cocok tampil</span><span class="pill pill-pk">Sesuai</span><span class="tc-toggle">cURL</span></span></summary>
+          <div class="tc-body">
+            <pre class="curl">curl -G "{{base_url}}/api/v1/users/msp/" \
+  -H "Authorization: Bearer {{token}}" \
+  --data-urlencode 'filters=[["full_name","ilike","Jane"]]'</pre>
+            <div class="tc-expected">Respons yang diharapkan: <code>200 OK</code>, hanya user dengan nama cocok yang muncul</div>
+          </div>
+        </details>
+
+        <details class="test-case">
+          <summary><span class="tc-kondisi">Mencari user MSP berdasarkan nama yang tidak ada</span><span class="tc-right"><span class="tc-hasil">Hasil kosong</span><span class="pill pill-pk">Sesuai</span><span class="tc-toggle">cURL</span></span></summary>
+          <div class="tc-body">
+            <pre class="curl">curl -G "{{base_url}}/api/v1/users/msp/" \
+  -H "Authorization: Bearer {{token}}" \
+  --data-urlencode 'filters=[["full_name","eq","NamaYangGakAda"]]'</pre>
+            <div class="tc-expected">Respons yang diharapkan: <code>200 OK</code>, <code class="inline">total_items: 0</code></div>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <section id="gating">
+      <h2><span class="num">06</span> Hasil Detail — Kontrol Akses</h2>
+      <p class="section-intro">Bagian paling krusial: akses user MSP harus selalu mengikuti status perusahaan tempat mereka bernaung, secara <em>real-time</em> — bukan cuma dicek sekali waktu login. Kalau perusahaan disuspend atau kontraknya berakhir, semua user di bawahnya harus langsung kehilangan akses, baik saat mereka mau login, saat sedang aktif memakai sistem, maupun saat aplikasi mitra eksternal mengecek data mereka.</p>
+
+      <div class="callout principal">
+        <span class="label">Cara mengubah status perusahaan untuk skenario di bawah</span>
+        <pre class="curl" style="margin:8px 0 0;">curl -X PUT "{{base_url}}/api/v1/msp-companies/{{company_id}}" \
+  -H "Authorization: Bearer {{token}}" \
+  -H "Content-Type: application/json" \
+  -d '{"code":"MSP-DEMO-01","name":"Demo Company 1","msp_status":STATUS_ID}'</pre>
+        <p style="margin-top:8px;">Ganti <code class="inline">STATUS_ID</code>: <code class="inline">1</code>=Pending, <code class="inline">2</code>=Active, <code class="inline">3</code>=Suspended, <code class="inline">4</code>=Terminated. Pastikan <code class="inline">{{msp_user_id}}</code> / <code class="inline">{{agent_id}}</code> yang dipakai di bawah tertaut ke <code class="inline">company_id</code> ini.</p>
+      </div>
+
+      <div class="test-list">
+        <details class="test-case">
+          <summary><span class="tc-kondisi">Kontrak belum diproses (Pending) — cek dari aplikasi eksternal</span><span class="tc-right"><span class="tc-hasil">Akses ditolak</span><span class="pill pill-pk">Sesuai</span><span class="tc-toggle">cURL</span></span></summary>
+          <div class="tc-body">
+            <p class="tc-note">Prasyarat: ubah status perusahaan ke <code class="inline">1</code> (Pending) pakai perintah di atas.</p>
+            <pre class="curl">curl -X POST "{{base_url}}/api/v1/users/me/?application_id={{application_id}}" \
+  -H "X-API-KEY: {{api_key}}" \
+  -H "Content-Type: application/json" \
+  -d '{"user_reference_id":"{{agent_id}}"}'</pre>
+            <div class="tc-expected">Respons yang diharapkan: <code>403 Forbidden</code></div>
+          </div>
+        </details>
+
+        <details class="test-case">
+          <summary><span class="tc-kondisi">Kemitraan berjalan normal (Active) — cek dari aplikasi eksternal</span><span class="tc-right"><span class="tc-hasil">Akses diberikan</span><span class="pill pill-pk">Sesuai</span><span class="tc-toggle">cURL</span></span></summary>
+          <div class="tc-body">
+            <p class="tc-note">Prasyarat: ubah status perusahaan ke <code class="inline">2</code> (Active).</p>
+            <pre class="curl">curl -X POST "{{base_url}}/api/v1/users/me/?application_id={{application_id}}" \
+  -H "X-API-KEY: {{api_key}}" \
+  -H "Content-Type: application/json" \
+  -d '{"user_reference_id":"{{agent_id}}"}'</pre>
+            <div class="tc-expected">Respons yang diharapkan: <code>200 OK</code>, field <code class="inline">msp</code> di data berisi kode perusahaan &amp; status ACTIVE</div>
+          </div>
+        </details>
+
+        <details class="test-case">
+          <summary><span class="tc-kondisi">Dibekukan sementara (Suspended) — cek dari aplikasi eksternal</span><span class="tc-right"><span class="tc-hasil">Akses ditolak</span><span class="pill pill-pk">Sesuai</span><span class="tc-toggle">cURL</span></span></summary>
+          <div class="tc-body">
+            <p class="tc-note">Prasyarat: ubah status perusahaan ke <code class="inline">3</code> (Suspended).</p>
+            <pre class="curl">curl -X POST "{{base_url}}/api/v1/users/me/?application_id={{application_id}}" \
+  -H "X-API-KEY: {{api_key}}" \
+  -H "Content-Type: application/json" \
+  -d '{"user_reference_id":"{{agent_id}}"}'</pre>
+            <div class="tc-expected">Respons yang diharapkan: <code>403 Forbidden</code></div>
+          </div>
+        </details>
+
+        <details class="test-case">
+          <summary><span class="tc-kondisi">Kontrak berakhir (Terminated) — cek dari aplikasi eksternal</span><span class="tc-right"><span class="tc-hasil">Akses ditolak</span><span class="pill pill-pk">Sesuai</span><span class="tc-toggle">cURL</span></span></summary>
+          <div class="tc-body">
+            <p class="tc-note">Prasyarat: ubah status perusahaan ke <code class="inline">4</code> (Terminated).</p>
+            <pre class="curl">curl -X POST "{{base_url}}/api/v1/users/me/?application_id={{application_id}}" \
+  -H "X-API-KEY: {{api_key}}" \
+  -H "Content-Type: application/json" \
+  -d '{"user_reference_id":"{{agent_id}}"}'</pre>
+            <div class="tc-expected">Respons yang diharapkan: <code>403 Forbidden</code></div>
+          </div>
+        </details>
+
+        <details class="test-case">
+          <summary><span class="tc-kondisi">Kembali diaktifkan setelah sempat bermasalah</span><span class="tc-right"><span class="tc-hasil">Akses pulih normal</span><span class="pill pill-pk">Sesuai</span><span class="tc-toggle">cURL</span></span></summary>
+          <div class="tc-body">
+            <p class="tc-note">Prasyarat: ubah status perusahaan kembali ke <code class="inline">2</code> (Active) setelah sebelumnya Suspended/Terminated.</p>
+            <pre class="curl">curl -X POST "{{base_url}}/api/v1/users/me/?application_id={{application_id}}" \
+  -H "X-API-KEY: {{api_key}}" \
+  -H "Content-Type: application/json" \
+  -d '{"user_reference_id":"{{agent_id}}"}'</pre>
+            <div class="tc-expected">Respons yang diharapkan: <code>200 OK</code></div>
+          </div>
+        </details>
+
+        <details class="test-case">
+          <summary><span class="tc-kondisi">User yang memang tidak bernaung di perusahaan MSP manapun</span><span class="tc-right"><span class="tc-hasil">Akses normal</span><span class="pill pill-pk">Sesuai</span><span class="tc-toggle">cURL</span></span></summary>
+          <div class="tc-body">
+            <p class="tc-note">Pakai <code class="inline">agent_id</code> milik user MSP yang didaftarkan tanpa <code class="inline">msp_company_id</code> (lihat §05, skenario kategori-saja).</p>
+            <pre class="curl">curl -X POST "{{base_url}}/api/v1/users/me/?application_id={{application_id}}" \
+  -H "X-API-KEY: {{api_key}}" \
+  -H "Content-Type: application/json" \
+  -d '{"user_reference_id":"AGT-DEMO-01"}'</pre>
+            <div class="tc-expected">Respons yang diharapkan: <code>200 OK</code>, field <code class="inline">msp</code> berupa array kosong <code class="inline">[]</code></div>
+          </div>
+        </details>
+
+        <details class="test-case">
+          <summary><span class="tc-kondisi">Data perusahaan sudah tidak ada/dihapus dari sistem</span><span class="tc-right"><span class="tc-hasil">Akses ditolak</span><span class="pill pill-pk">Sesuai</span><span class="tc-toggle">cURL</span></span></summary>
+          <div class="tc-body">
+            <p class="tc-note">Prasyarat: perusahaan tempat user ini bernaung sudah dihapus dari sistem (lihat §04 "Perlindungan Data Saat Penghapusan" untuk cara sistem menolak penghapusan normal — skenario ini menguji jaring pengaman tambahan bila data perusahaan hilang lewat cara lain).</p>
+            <pre class="curl">curl -X POST "{{base_url}}/api/v1/users/me/?application_id={{application_id}}" \
+  -H "X-API-KEY: {{api_key}}" \
+  -H "Content-Type: application/json" \
+  -d '{"user_reference_id":"{{agent_id}}"}'</pre>
+            <div class="tc-expected">Respons yang diharapkan: <code>403 Forbidden</code> (diperlakukan sama seperti status tidak aktif)</div>
+          </div>
+        </details>
+
+        <details class="test-case">
+          <summary><span class="tc-kondisi">Kemitraan berjalan normal (Active) — saat user login</span><span class="tc-right"><span class="tc-hasil">Login berhasil</span><span class="pill pill-pk">Sesuai</span><span class="tc-toggle">cURL</span></span></summary>
+          <div class="tc-body">
+            <p class="tc-note">Prasyarat: status perusahaan tempat user ini bernaung = Active. <code class="inline">identifier</code> di bawah adalah email/username milik user MSP tersebut.</p>
+            <pre class="curl">curl -X POST "{{base_url}}/api/v1/auth/login?aid={{application_id}}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "identifier": "email-user-msp@example.com",
+    "password": "password-user-tersebut",
+    "device_info": {
+      "unique_device_id": "qa-gating-01",
+      "device_name": "QA Gating Test",
+      "device_type_id": 1
+    }
+  }'</pre>
+            <div class="tc-expected">Respons yang diharapkan: <code>200 OK</code>, token diterbitkan</div>
+          </div>
+        </details>
+
+        <details class="test-case">
+          <summary><span class="tc-kondisi">Dibekukan sementara (Suspended) — saat user login</span><span class="tc-right"><span class="tc-hasil">Login ditolak</span><span class="pill pill-pk">Sesuai</span><span class="tc-toggle">cURL</span></span></summary>
+          <div class="tc-body">
+            <p class="tc-note">Prasyarat: status perusahaan tempat user ini bernaung diubah jadi Suspended sebelum mencoba login.</p>
+            <pre class="curl">curl -X POST "{{base_url}}/api/v1/auth/login?aid={{application_id}}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "identifier": "email-user-msp@example.com",
+    "password": "password-user-tersebut",
+    "device_info": {
+      "unique_device_id": "qa-gating-02",
+      "device_name": "QA Gating Test",
+      "device_type_id": 1
+    }
+  }'</pre>
+            <div class="tc-expected">Respons yang diharapkan: <code>403 Forbidden</code> — "msp company is not active"</div>
+          </div>
+        </details>
+
+        <details class="test-case">
+          <summary><span class="tc-kondisi">User yang tidak bekerja di bawah perusahaan MSP manapun mencoba login</span><span class="tc-right"><span class="tc-hasil">Login normal</span><span class="pill pill-pk">Sesuai</span><span class="tc-toggle">cURL</span></span></summary>
+          <div class="tc-body">
+            <p class="tc-note">Memastikan aturan gating ini tidak ikut memblokir user lain (misalnya user internal/CRM) yang memang bukan bagian dari ekosistem MSP.</p>
+            <pre class="curl">curl -X POST "{{base_url}}/api/v1/auth/login?aid={{application_id}}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "identifier": "email-user-non-msp@example.com",
+    "password": "password-user-tersebut",
+    "device_info": {
+      "unique_device_id": "qa-gating-03",
+      "device_name": "QA Gating Test",
+      "device_type_id": 1
+    }
+  }'</pre>
+            <div class="tc-expected">Respons yang diharapkan: <code>200 OK</code>, tidak terpengaruh aturan gating sama sekali</div>
+          </div>
+        </details>
+      </div>
+
+      <div class="callout">
+        <span class="label">Catatan</span>
+        <p>Pengecekan saat sesi sedang berlangsung (bukan cuma saat login) sudah divalidasi ekstensif di putaran testing sebelumnya, termasuk skenario perusahaan disuspend di tengah-tengah user sedang aktif memakai sistem — user langsung kehilangan akses tanpa perlu menunggu sesi habis. Caranya sama seperti login, tinggal ganti endpoint tujuan dengan endpoint modul manapun (misal <code class="inline">GET {{base_url}}/api/v1/users/msp/</code>) memakai token sesi yang sudah aktif.</p>
+      </div>
+    </section>
+
+    <section id="kesimpulan">
+      <h2><span class="num">07</span> Kesimpulan</h2>
+      <p>Dari 76 skenario yang diuji mencakup MSP Master, pengelolaan user MSP, dan kontrol akses lintas perusahaan, seluruhnya menunjukkan hasil yang sesuai dengan aturan bisnis yang sudah disepakati. Sistem terbukti konsisten dalam tiga hal utama:</p>
+      <ul style="max-width: 70ch; padding-left: 22px;">
+        <li>Menjaga integritas struktur data (hierarki perusahaan, keterkaitan user-perusahaan) baik saat data dibuat maupun diubah sebagian.</li>
+        <li>Menolak input yang tidak valid dan akses dari pihak yang tidak berwenang secara konsisten.</li>
+        <li>Menyelaraskan akses user dengan status perusahaan MSP secara real-time di semua titik pengecekan.</li>
+      </ul>
+      <p>Modul ini dinyatakan siap untuk tahap berikutnya.</p>
+    </section>
+
+    <footer>
+      Laporan Hasil Testing · MSP Master &amp; User MSP · crm-vaultkey-rbac-backend
+    </footer>
+  </main>
+</div>
+
+</body></html>
