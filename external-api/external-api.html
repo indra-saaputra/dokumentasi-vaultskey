@@ -369,17 +369,20 @@ flowchart TD
       <div class="diagram">
 <pre class="mermaid">
 flowchart TD
-    A["POST /passwords/reset/initiate\nemail"] --> B["token dibuat, valid 1 jam,\nlink dikirim via Mailgun"]
-    B -->|"request ulang < 1 menit"| C["429: too many\nreset password requests"]
-    B --> D["GET /passwords/reset/validate?token=..."]
+    A["POST /passwords/reset/initiate\nemail"] --> B["200 — selalu.\nhasil dibaca dari data"]
+    B -->|"is_email_matched false"| C["email tidak terdaftar"]
+    B -->|"is_rate_limited true"| C2["diminta ulang < 1 menit;\ntautan lama masih hidup"]
+    B -->|"send_success true"| D["GET /passwords/reset/validate?token=..."]
     D -->|"invalid/expired"| E["400 Bad Request"]
-    D -->|"valid"| F["POST /passwords/reset\nreset_token + password baru"]
-    F --> G["password diupdate (bcrypt),\ntoken dihapus"]
+    D -->|"valid"| F["POST /otp/validate\nreference_token + otp"]
+    F --> G["POST /passwords/reset\nreset_token + password baru"]
+    G -->|"400 / 409 + error_code"| H["ditolak; token TIDAK hangus,\nbisa coba kata sandi lain"]
+    G -->|"200"| I["password diupdate (bcrypt),\ntoken + OTP dihapus"]
 </pre>
       </div>
       <div class="callout">
         <span class="label">Panduan terpisah</span>
-        <p>Untuk integrator OMNI: <a href="./reset-password.html">Reset Password — Panduan Integrasi</a> memecah alur ini jadi empat panggilan berurutan lengkap dengan contoh curl, jebakan yang sering ditemui (OTP salah tetap balas 200, key <code class="inline">errors</code> huruf besar), dan aturan validasi kata sandi.</p>
+        <p>Untuk integrator OMNI: <a href="./reset-password.html">Reset Password — Panduan Integrasi</a> memecah alur ini jadi empat panggilan berurutan lengkap dengan contoh curl, Postman collection, jebakan yang sering ditemui (langkah 1 tidak pernah gagal lewat status HTTP, OTP salah tetap balas 200), dan tiga <code class="inline">error_code</code> baru di langkah 4.</p>
       </div>
     </section>
 
@@ -620,10 +623,14 @@ flowchart TD
         <div class="body">
           <h5>Request Body</h5>
           <pre class="code-block">{ "email": "john@example.com" }</pre>
-          <h5><span class="pill pill-pk">200</span> OK</h5>
-          <pre class="code-block">{ "message": "Password reset email sent successfully" }</pre>
-          <h5><span class="pill pill-danger">429</span> Too Many Requests</h5>
-          <pre class="code-block">{ "message": "too many reset password requests" }</pre>
+          <h5><span class="pill pill-pk">200</span> OK — satu-satunya status yang dikembalikan</h5>
+          <pre class="code-block">{ "message": "Password reset email sent successfully",
+  "data": { "is_email_matched": true, "send_success": true,
+            "request_id": "019ffa7a-...", "reset_link_expires_in": 1800 } }
+// email tidak terdaftar : is_email_matched false  (dulu 404)
+// pengiriman gagal      : send_success false      (dulu 500)
+// diminta ulang < 1 mnt : is_rate_limited true    (dulu 429)</pre>
+          <p class="note">Sejak 13 Agu 2026 endpoint ini tidak pernah gagal lewat status HTTP — hasilnya dibaca dari <code class="inline">data</code>. Detailnya di <a href="./reset-password.html">panduan integrasi</a>.</p>
         </div>
       </details>
 
@@ -647,6 +654,11 @@ flowchart TD
           <pre class="code-block">{ "reset_token": "a1b2c3d4-...", "password": "PasswordBaru8" }</pre>
           <h5><span class="pill pill-pk">200</span> OK</h5>
           <pre class="code-block">{ "message": "Password reset successfully" }</pre>
+          <h5><span class="pill pill-warn">400</span> / <span class="pill pill-warn">409</span> — dengan <code class="inline">error_code</code></h5>
+          <pre class="code-block">400 PASSWORD_POLICY_VIOLATION  // kata sandi terlalu lemah
+409 SAME_PASSWORD              // sama dengan yang sekarang
+409 PASSWORD_HISTORY_MATCH     // salah satu dari 5 terakhir</pre>
+          <p class="note">Ketiga penolakan ini tidak menghanguskan reset token maupun OTP — user bisa langsung mencoba kata sandi lain.</p>
         </div>
       </details>
 
