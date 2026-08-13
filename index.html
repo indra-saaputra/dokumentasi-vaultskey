@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
 <meta charset="utf-8">
@@ -28,8 +28,9 @@
   details.group { background: var(--bg-raised); border: 1px solid var(--line); border-radius: 10px; box-shadow: var(--shadow); overflow: hidden; margin-bottom: 14px; }
   details.group summary { list-style: none; cursor: pointer; padding: 20px 22px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
   details.group summary::-webkit-details-marker { display: none; }
-  details.group summary h2 { font-size: 16px; margin: 0 0 6px; }
-  details.group summary p { font-size: 13.5px; color: var(--ink-dim); margin: 0; }
+  details.group summary .sm-body { display: block; }
+  details.group summary .sm-title { display: block; font-size: 16px; font-weight: 700; margin: 0 0 6px; }
+  details.group summary .sm-desc { display: block; font-size: 13.5px; color: var(--ink-dim); }
   details.group summary .chev { font-family: ui-monospace, monospace; font-size: 12px; color: var(--ink-dim); flex-shrink: 0; transition: transform .15s ease; }
   details.group[open] summary .chev { transform: rotate(90deg); }
   details.group .items { padding: 0 14px 14px; display: flex; flex-direction: column; gap: 10px; }
@@ -49,10 +50,10 @@
 
   <details class="group">
     <summary>
-      <div>
-        <h2>Modul MSP</h2>
-        <p>Dokumentasi teknis dan laporan hasil testing untuk modul MSP (Managed Service Provider) pada VaultKey — perusahaan MSP dan user MSP.</p>
-      </div>
+      <span class="sm-body">
+        <span class="sm-title">Modul MSP</span>
+        <span class="sm-desc">Dokumentasi teknis dan laporan hasil testing untuk modul MSP (Managed Service Provider) pada VaultKey — perusahaan MSP dan user MSP.</span>
+      </span>
       <span class="chev">▶</span>
     </summary>
     <div class="items">
@@ -73,10 +74,10 @@
 
   <details class="group">
     <summary>
-      <div>
-        <h2>Modul External API (Nexus/OMNI)</h2>
-        <p>Dokumentasi teknis untuk grup route <code>/api/v1/external/*</code> — pintu masuk backend-to-backend untuk aplikasi Nexus lewat OMNI (registrasi, login, device trust, password, biometrik).</p>
-      </div>
+      <span class="sm-body">
+        <span class="sm-title">Modul External API (Nexus/OMNI)</span>
+        <span class="sm-desc">Dokumentasi teknis untuk grup route <code>/api/v1/external/*</code> — pintu masuk backend-to-backend untuk aplikasi Nexus lewat OMNI (registrasi, login, device trust, password, biometrik).</span>
+      </span>
       <span class="chev">▶</span>
     </summary>
     <div class="items">
