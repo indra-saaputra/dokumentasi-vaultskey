@@ -627,7 +627,8 @@ flowchart TD
           <pre class="code-block">{ "message": "Password reset email sent successfully",
   "data": { "is_email_matched": true, "send_success": true,
             "request_id": "019ffa7a-...", "reset_link_expires_in": 1800 } }
-// email tidak terdaftar : is_email_matched false  (dulu 404)
+// bukan email utama    : is_email_matched false  (dulu 404)
+//                        alamat sekunder yang sah pun false
 // pengiriman gagal      : send_success false      (dulu 500)
 // diminta ulang < 1 mnt : is_rate_limited true    (dulu 429)</pre>
           <p class="note">Sejak 13 Agu 2026 endpoint ini tidak pernah gagal lewat status HTTP — hasilnya dibaca dari <code class="inline">data</code>. Detailnya di <a href="./reset-password.html">panduan integrasi</a>.</p>
