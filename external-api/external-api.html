@@ -451,7 +451,11 @@ flowchart TD
   "delivery_method": "sms",     // "sms" | "email"
   "purpose": "registration",
   "platform": "nexus"
-}</pre>
+}
+// Khusus alur reset password (purpose "forgotpassotp"),
+// delivery_method harus "email" dan identifier harus email
+// utama -- langkah terakhir mencocokkan keduanya. Lihat
+// panduan integrasi Reset Password.</pre>
           <h5><span class="pill pill-pk">200</span> OK</h5>
           <pre class="code-block">{
   "message": "OTP requested successfully",
