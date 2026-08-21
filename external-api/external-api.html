@@ -363,7 +363,7 @@ flowchart TD
 
     <section id="password">
       <h2><span class="num">06</span> Siklus Password</h2>
-      <p class="lede">Tiga jalur terpisah: cek/perpanjang masa berlaku, dan reset lewat email — keduanya independen satu sama lain.</p>
+      <p class="lede">Dua jalur terpisah: cek/perpanjang masa berlaku, dan reset lewat email. Sejak 21 Agu 2026 alur reset memakai <strong>dua email dan dua UUID</strong> — tautan dan kode OTP tidak lagi datang bersamaan.</p>
 
       <h3>Expiry Check &amp; Extend</h3>
       <p>Password dianggap kedaluwarsa 90 hari sejak <code class="inline">password_changed_at</code>. <code class="inline">POST /passwords/extend</code> tidak mengubah password — cuma menggeser ulang <code class="inline">password_changed_at</code> ke sekarang, efeknya menunda expiry 90 hari lagi tanpa user harus ganti password (dipakai untuk tombol "ingatkan nanti").</p>
@@ -372,20 +372,22 @@ flowchart TD
       <div class="diagram">
 <pre class="mermaid">
 flowchart TD
-    A["POST /passwords/reset/initiate\nemail"] --&gt; B["200 — selalu.\nhasil dibaca dari data"]
-    B --&gt;|"is_email_matched false"| C["email tidak terdaftar"]
+    A["POST /passwords/reset/initiate\nemail"] --&gt; B["200 — selalu.\nemail 1: tautan saja (rst)"]
+    B --&gt;|"is_email_matched false"| C["bukan email utama"]
     B --&gt;|"is_rate_limited true"| C2["diminta ulang &lt; 1 menit;\ntautan lama masih hidup"]
-    B --&gt;|"send_success true"| D["GET /passwords/reset/validate?token=..."]
-    D --&gt;|"invalid/expired"| E["400 Bad Request"]
-    D --&gt;|"valid"| F["POST /otp/validate\nreference_token + otp"]
-    F --&gt; G["POST /passwords/reset\nreset_token + password baru"]
+    B --&gt;|"send_success true"| D["GET /passwords/reset/validate?token=rst"]
+    D --&gt;|"invalid/expired"| E["400 / 404"]
+    D --&gt;|"valid"| R["POST /otp/request\nidentifier = email langkah 1"]
+    R --&gt; R2["email 2: kode 6 digit\n+ reference_token (UUID KEDUA)"]
+    R2 --&gt; F["POST /otp/validate\nreference_token + otp"]
+    F --&gt; G["POST /passwords/reset\nreset_token + otp_reference_token\n+ password baru"]
     G --&gt;|"400 / 409 + error_code"| H["ditolak; token TIDAK hangus,\nbisa coba kata sandi lain"]
-    G --&gt;|"200"| I["password diupdate (bcrypt),\ntoken + OTP dihapus"]
+    G --&gt;|"200"| I["password diupdate (bcrypt),\nkedua token dihapus,\nsemua sesi + biometrik dicabut"]
 </pre>
       </div>
       <div class="callout">
         <span class="label">Panduan terpisah</span>
-        <p>Untuk integrator OMNI: <a href="./reset-password.html">Reset Password — Panduan Integrasi</a> memecah alur ini jadi empat panggilan berurutan lengkap dengan contoh curl, Postman collection, jebakan yang sering ditemui (langkah 1 tidak pernah gagal lewat status HTTP, OTP salah tetap balas 200), dan tiga <code class="inline">error_code</code> baru di langkah 4.</p>
+        <p>Untuk integrator OMNI: <a href="./reset-password.html">Reset Password — Panduan Integrasi</a> memecah alur ini jadi lima panggilan berurutan lengkap dengan contoh curl, Postman collection, tabel uji negatif yang sudah dijalankan ke server, jebakan yang sering ditemui (dua UUID gampang tertukar, langkah 1 tidak pernah gagal lewat status HTTP), dan aturan pembatas OTP.</p>
       </div>
     </section>
 
@@ -634,7 +636,7 @@ flowchart TD
 //                        alamat sekunder yang sah pun false
 // pengiriman gagal      : send_success false      (dulu 500)
 // diminta ulang &lt; 1 mnt : is_rate_limited true    (dulu 429)</pre>
-          <p class="note">Sejak 13 Agu 2026 endpoint ini tidak pernah gagal lewat status HTTP — hasilnya dibaca dari <code class="inline">data</code>. Detailnya di <a href="./reset-password.html">panduan integrasi</a>.</p>
+          <p class="note">Endpoint ini tidak pernah gagal lewat status HTTP — hasilnya dibaca dari <code class="inline">data</code>. Sejak 21 Agu 2026 emailnya <strong>hanya berisi tautan</strong>; kode OTP diminta terpisah lewat <code class="inline">POST /otp/request</code>. Detailnya di <a href="./reset-password.html">panduan integrasi</a>.</p>
         </div>
       </details>
 
@@ -655,7 +657,12 @@ flowchart TD
         <summary><span class="method method-post">POST</span><span class="path">/external/passwords/reset</span><span class="desc">Commit password baru (lewat reset)</span><span class="chev">▶</span></summary>
         <div class="body">
           <h5>Request Body</h5>
-          <pre class="code-block">{ "reset_token": "a1b2c3d4-...", "password": "PasswordBaru8" }</pre>
+          <pre class="code-block">{ "reset_token": "770c91fa-...",
+  "otp_reference_token": "c7b421ac-...",
+  "password": "PasswordBaru8" }
+// dua UUID BERBEDA: reset_token dari tautan email,
+// otp_reference_token dari POST /otp/request.
+// otp_reference_token wajib sejak 21 Agu 2026 -- tanpa itu 422.</pre>
           <h5><span class="pill pill-pk">200</span> OK</h5>
           <pre class="code-block">{ "message": "Password reset successfully" }</pre>
           <h5><span class="pill pill-warn">400</span> / <span class="pill pill-warn">409</span> — dengan <code class="inline">error_code</code></h5>
